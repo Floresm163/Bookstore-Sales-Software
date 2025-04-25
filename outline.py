@@ -1,11 +1,3 @@
-# adding functions: createWishlist, createBooklisting, viewWishlist, viewBooklistings, displayCustomerSupportTicketMenu, displayStaffSupportTicketMenu, userLogin, createLogin, displayAdminstratorMenu, displayStaffMenu, displayGuestMenu, displayCustomerMenu, getUserName, createUserName - MB
-# going to have to add functions to make user profiles for staff, admin, customer, and guest accounts then adjust user display menus to only be accesible to correct profile types (i.e. guests can set wishlists or access user menu...) - MB
-# creating two separate display menus for support tickets. - MB
-# displayCustomerSupportTicketMenu will allow customers to submit and view their pending/completed tickets without being able to edit or change their status. - MB
-# displayStaffSupportTicketMenu will allow employees to create tickets on customers behalf, edit tickets, update ticket status etc - MB
-# going to create 2 separate text files. userList.txt will keep track of all usernames/passwords with the users designation listed directly under it. profile.txt will be unique to each user account and have their various information listed. - MB
-# removed date of birth variable from user accounts - MB
-
 def userLogin(): # log in users
   print("1. User Login")
   print("2. Guest Login")
@@ -55,8 +47,6 @@ def designationMenu(designation, username):
   else:
     displayCustomerMenu(username)
     
-    
-
 def createProfile(): # create user profiles
   user_name = createUserName()
   password = input("Enter Password: ")
@@ -113,34 +103,15 @@ def createUserName(): # this function will get the username, make sure a user wi
       except:
         print("File not found.")
 
-
 def displayAdministratorMenu(username):
   print(f'Hello, {username}')
   print("\nAdministrators Menu\n")
   print("1. Profile Options")
-  print("2. Book List")
-  print("3. ")
+  print("2. Book Listings")
+  print("3. Sales Report")
         
 def displayStaffMenu():
 
-def displayGuestMenu():
-  print("Main Menu")
-  print("1. Book Listings")
-  print("2. Exit")
-  while True:
-    try:
-        user_input = int(input("Please enter a number between 1-2: "))
-        if user_input == 1:
-            viewBookListings()
-            break
-        elif user_input == 2:
-            print("Goodbye")
-            break
-        else:
-            print("Invalid entry.")
-    except ValueError: # if user enters an integer
-        print("Invalid entry. Please enter a number between 1-2.")
-  
 def displayCustomerMenu():
   print("Main Menu")
   print("1. Wish List")
@@ -166,8 +137,25 @@ def displayCustomerMenu():
             print("Invalid entry.")
     except ValueError: # if user enters an integer
         print("Invalid entry. Please enter a number between 1-4.")
-  
 
+def displayGuestMenu():
+  print("Main Menu")
+  print("1. Book Listings")
+  print("2. Exit")
+  while True:
+    try:
+        user_input = int(input("Please enter a number between 1-2: "))
+        if user_input == 1:
+            viewBookListings()
+            break
+        elif user_input == 2:
+            print("Goodbye")
+            break
+        else:
+            print("Invalid entry.")
+    except ValueError: # if user enters an integer
+        print("Invalid entry. Please enter a number between 1-2.")
+  
 def displayWishlistMenu():
   print("Wishlist")
   print("1. Create New Wishlist")

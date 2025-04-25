@@ -46,7 +46,72 @@ def designationMenu(designation, username):
     displayStaffMenu(username)
   else:
     displayCustomerMenu(username)
-    
+
+def displayAdministratorMenu(username):
+  print(f'Hello, {username}')
+  print("\nAdministrators Menu\n")
+  print("1. Manage Accounts") # create accounts, edit accounts, remove accounts
+  print("2. Book Listings") # create book listing, edit book listing, adjust price, add discount, view book listing, search
+  # some kind of function to process sales and run reports??
+  print("3. Exit")
+  while True:
+    try:
+        user_input = int(input("Please enter a number between 1-2: "))
+                   
+        
+def displayStaffMenu(username):
+  print(f'Hello, {username}')
+  print("\Staff Menu\n")
+  print("1. Book Listings") # create book listing, edit book listing, search book listing
+  # some kind of function to process sales and run reports??
+  print("2. Exit")
+  while True:
+    try:
+        user_input = int(input("Please enter a number between 1-2: "))
+
+def displayCustomerMenu():
+  print("Main Menu")
+  print("1. Wish Lists") # view wishlists, create wishlists, edit wishlists, delete wishlists
+  print("2. Book Listings") # view book listing, search book listing
+  print("4. Exit")
+  while True:
+    try:
+        user_input = int(input("Please enter a number between 1-4: "))
+        if user_input == 1:
+            displayWishlistMenu()
+            break
+        elif user_input == 2:
+            viewBookListings()
+            break
+        elif user_input == 3:
+            displayCustomerSupportTicketmenu():
+            break
+      elif user_input == 4:
+            print("Goodbye")
+            break
+        else:
+            print("Invalid entry.")
+    except ValueError: # if user enters an integer
+        print("Invalid entry. Please enter a number between 1-4.")
+
+def displayGuestMenu():
+  print("Main Menu")
+  print("1. Book Listings")
+  print("2. Exit")
+  while True:
+    try:
+        user_input = int(input("Please enter a number between 1-2: "))
+        if user_input == 1:
+            viewBookListings()
+            break
+        elif user_input == 2:
+            print("Goodbye")
+            break
+        else:
+            print("Invalid entry.")
+    except ValueError: # if user enters an integer
+        print("Invalid entry. Please enter a number between 1-2.")
+
 def createProfile(): # create user profiles
   user_name = createUserName()
   password = input("Enter Password: ")
@@ -103,60 +168,8 @@ def createUserName(): # this function will get the username, make sure a user wi
       except:
         print("File not found.")
 
-def displayAdministratorMenu(username):
-  print(f'Hello, {username}')
-  print("\nAdministrators Menu\n")
-  print("1. Profile Options")
-  print("2. Book Listings")
-  print("3. Sales Report")
-        
-def displayStaffMenu():
 
-def displayCustomerMenu():
-  print("Main Menu")
-  print("1. Wish List")
-  print("2. Book Listings")
-  print("3. Support Tickets")
-  print("4. Exit")
-  while True:
-    try:
-        user_input = int(input("Please enter a number between 1-4: "))
-        if user_input == 1:
-            displayUserMenu()
-            break
-        elif user_input == 2:
-            viewBookListings()
-            break
-        elif user_input == 3:
-            displayCustomerSupportTicketmenu():
-            break
-      elif user_input == 4:
-            print("Goodbye")
-            break
-        else:
-            print("Invalid entry.")
-    except ValueError: # if user enters an integer
-        print("Invalid entry. Please enter a number between 1-4.")
-
-def displayGuestMenu():
-  print("Main Menu")
-  print("1. Book Listings")
-  print("2. Exit")
-  while True:
-    try:
-        user_input = int(input("Please enter a number between 1-2: "))
-        if user_input == 1:
-            viewBookListings()
-            break
-        elif user_input == 2:
-            print("Goodbye")
-            break
-        else:
-            print("Invalid entry.")
-    except ValueError: # if user enters an integer
-        print("Invalid entry. Please enter a number between 1-2.")
-  
-def displayWishlistMenu():
+  def displayWishlistMenu():
   print("Wishlist")
   print("1. Create New Wishlist")
   print("2. View Wishlist")
@@ -170,13 +183,13 @@ def displayWishlistMenu():
             createWishlist()
             break
         elif user_input == 2:
-            viewWishlist()
+            displayWishlist()
             break
         elif user_input == 3:
             editWishlist()
             break
         elif user_input == 4:
-            displayMainMenu()
+            displayCustomerMenu()
             break
       elif user_input == 5:
             print("Goodbye")
@@ -185,38 +198,41 @@ def displayWishlistMenu():
             print("Invalid entry.")
     except ValueError: # if user enters an integer
         print("Invalid entry. Please enter a number between 1-5.")
+
+def displayBookListingMenu():
+  print("Book Listing")
+  print("1. Add Listing")
+  print("2. Edit Listing")
+  print("3. Search Listing")
+  print("4. Return to Main Menu")
+  print("5. Exit")
   
-
-def displayBooklisting():
-def createWishlist():
-def viewWishlist():
 def createBookListing():
-
+  name
+  bookID
+  publisher
+  genre
+  price = float(
+  
+def displayBookListings():
 def setBookID(): # set bookID
 def setBookPublisher(): # set publisher for the book
 def setPrice(): # set base price for book
-def getBookID(): # return book id
+
+def getBookID():
 def getBookPublisher(): # return publisher name
 def getPrice(): # return base price for book
 
-def makePurchaseID():
+def createWishList():
+def displayWishList():
+def editWishList():
+def deleteWishList():
 
-def getCustomerName():
-def getUserName():
-def getCustomerAddress():
-def getCustomerEmail():
-def getCustomerPhone():
-
-def addSupportTicket():
-def setTicketNumber():
-def setTicketDescription():
-def removeSupportTicket():
-def editSupportTicket():
-def setTicketStatus(): # initially was named updateTicketStatus
-
-def displayStaffSupportTicketMenu():
-def displayCustomerSupporTicketMenu():
-
+def calculateCost():
 def calculateTax(): # retrive base price for book and calculate tax
 def setDiscount():
-def editDiscount():
+  
+def makeSalesTicket():
+def makeSalesReport():
+  
+

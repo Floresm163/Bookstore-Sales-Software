@@ -3,17 +3,28 @@
 # creating two separate display menus for support tickets. - MB
 # displayCustomerSupportTicketMenu will allow customers to submit and view their pending/completed tickets without being able to edit or change their status. - MB
 # displayStaffSupportTicketMenu will allow employees to create tickets on customers behalf, edit tickets, update ticket status etc - MB
-# going to create 2 separate text files. userList.txt will keep track of all usernames with the users designation listed directly under it. profile.txt will be unique to each user account and have their various information listed. - MB
+# going to create 2 separate text files. userList.txt will keep track of all usernames/passwords with the users designation listed directly under it. profile.txt will be unique to each user account and have their various information listed. - MB
 # removed date of birth variable from user accounts - MB
 
-def userLogin():
-  while True:
-    try:
-      userLogin = input("Enter UserName: ")
-      userLogin.upper()
-      userPassword = input("Enter Password: ")
-      with open('userList.txt', 'r') as userList:
-        user = userList.readline()
+def userLogin(): # log in users
+  print("1. User Login")
+  print("2. Guest Login")
+  while True: # validate input, keep looping until 1 or 2 is entered
+        input = int(input("Select option 1 or 2: "))
+        if input == 2:
+            displayGuestMenu()
+        elif input == 1:
+            break
+        else:
+          print("Invalid entry. Enter 1 or 2.")
+          
+  while True: # validate input
+    try: 
+      userLogin = input("Enter UserName: ") # get user name
+      userLogin.upper() # convert user name to uppercase
+      userPassword = input("Enter Password: ") # get password
+      with open('userList.txt', 'r') as userList: # open list of user names, passwords, and designations
+        user = userList.readline() 
         password = userList.readline()
         designation = userList.readline()
         user_found = False
@@ -22,22 +33,31 @@ def userLogin():
           password = password.rstrip('\n')
           designation = designation.rstrip('\n')
           int(designation)
-          if userLogin == user and userPassword == password:
+          if userLogin == user and userPassword == password: 
             user_found = True
             break
           else: 
             user = userList.readline()
             password = userList.readline()
             designation = userList.readline()
-    
         if user_found == True:
-          designationMenu(designation)
+          designationMenu(designation, user)
         else:
           print("Username or Password invalid.")
       except:
         print("File not found.")
 
-def createLogin():
+def designationMenu(designation, username):
+  if designation == 1:
+    displayAdministratorMenu(username)
+  elif designation == 2:
+    displayStaffMenu(username)
+  else:
+    displayCustomerMenu(username)
+    
+    
+
+def createProfile(): # create user profiles
   user_name = createUserName()
   password = input("Enter Password: ")
   first_name = input("Enter First Name: ")
@@ -48,25 +68,25 @@ def createLogin():
   phone = input("Enter Phone Number: ")
   
   print("Account Designations")
-  print("Assign Account Designation: Administrators = 1, Staff = 2, Customers = 3, Guests = 4")
+  print("Assign Account Designation: Administrators = 1, Staff = 2, Customers = 3")
   while True:
     try:
       user_designation = int(input("Enter the designation for account: "))
-      if 0 <= user_designation <= 4:
+      if 0 <= user_designation <= 3:
         user_designation = str(userDesignation)
         break
       else:
-        print("Designation invalid. Please enter a designation between 1-4.")
+        print("Designation invalid. Please enter a designation between 1-3.")
     except ValueError:
-      print("Designation invalid. Please enter a designation between 1-4.")
+      print("Designation invalid. Please enter a designation between 1-3.")
 
-  with open('userList.txt', 'a') as userList:
+  with open('userList.txt', 'a') as userList: # create text file to track usernames, passwords, and designations
     userList.write(f'{user_name}\n')
     userList.write(f'{password}\n')
     userList.write(f'{user_designation}\n')
 
-  filename = (f'{full_name}_{user_name}')
-  with open(f'{filename}.txt', 'w') as profile:
+  filename = (f'{user_name}')
+  with open(f'{filename}.txt', 'w') as profile: # create user profile text file
     profile.write(f'{user_name}\n')
     profile.write(f'{password}\n')
     profile.write(f'{full_name}\n')
@@ -74,7 +94,7 @@ def createLogin():
     profile.write(f'{email}\n')
     profile.write(f'{phone}\n') 
 
-def createUserName(): # this function will get the username and make sure a user with that name doesn't already exist
+def createUserName(): # this function will get the username, make sure a user with that name doesn't already exist, and conver the user name to uppercase
   while True:
       username = input("Enter username: ")
       try:
@@ -94,7 +114,7 @@ def createUserName(): # this function will get the username and make sure a user
         print("File not found.")
 
 
-def displayAdminMenu():
+def displayAdministratorMenu():
 def displayStaffMenu():
 
 def displayGuestMenu():

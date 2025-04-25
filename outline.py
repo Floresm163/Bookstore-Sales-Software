@@ -67,7 +67,7 @@ def createProfile(): # create user profiles
   email = input("Enter eMail: ")
   phone = input("Enter Phone Number: ")
   
-  print("Account Designations")
+  print("\nAccount Designations")
   print("Assign Account Designation: Administrators = 1, Staff = 2, Customers = 3")
   while True:
     try:
@@ -116,8 +116,10 @@ def createUserName(): # this function will get the username, make sure a user wi
 
 def displayAdministratorMenu(username):
   print(f'Hello, {username}')
-  print("Administrators Menu")
-  print("1. ")
+  print("\nAdministrators Menu\n")
+  print("1. Profile Options")
+  print("2. Book List")
+  print("3. ")
         
 def displayStaffMenu():
 

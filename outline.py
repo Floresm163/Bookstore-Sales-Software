@@ -38,7 +38,7 @@ def userLogin(): # log in users
           print("Username or Password invalid.")
       except:
         print("File not found.")
-
+        
 def designationMenu(designation, username):
   if designation == 1:
     displayAdministratorMenu(username)

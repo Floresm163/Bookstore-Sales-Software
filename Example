@@ -38,11 +38,6 @@ def userLogin():
       except:
         print("File not found.")
 
-  
-    
-
-
-
 def createLogin():
   user_name = createUserName()
   password = input("Enter Password: ")

@@ -94,7 +94,7 @@ def createProfile(): # create user profiles
     profile.write(f'{email}\n')
     profile.write(f'{phone}\n') 
 
-def createUserName(): # this function will get the username, make sure a user with that name doesn't already exist, and conver the user name to uppercase
+def createUserName(): # this function will get the username, make sure a user with that name doesn't already exist, and convert the user name to uppercase
   while True:
       username = input("Enter username: ")
       try:
@@ -114,7 +114,11 @@ def createUserName(): # this function will get the username, make sure a user wi
         print("File not found.")
 
 
-def displayAdministratorMenu():
+def displayAdministratorMenu(username):
+  print(f'Hello, {username}')
+  print("Administrators Menu")
+  print("1. ")
+        
 def displayStaffMenu():
 
 def displayGuestMenu():
@@ -137,7 +141,7 @@ def displayGuestMenu():
   
 def displayCustomerMenu():
   print("Main Menu")
-  print("1. User Menu")
+  print("1. Wish List")
   print("2. Book Listings")
   print("3. Support Tickets")
   print("4. Exit")
@@ -162,7 +166,7 @@ def displayCustomerMenu():
         print("Invalid entry. Please enter a number between 1-4.")
   
 
-def displayWishlist():
+def displayWishlistMenu():
   print("Wishlist")
   print("1. Create New Wishlist")
   print("2. View Wishlist")

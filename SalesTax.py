@@ -1,21 +1,30 @@
-class SalesTax: # calculate sales tax
-  def __init__(self, tax):
-    self.tax = salestax
+import datetime # import datetime module to retrieve date of sale and generate unique purchase id
 
-  def getBookPrice(self): # get the base price of the book
-    while True: # start input validation for the price
+class SalesTax: # calculate sales tax
+  def __init__(self):
+    self.taxRate = 0.0625
+    self.bookPrice = bookPrice
+    self.customerName = ''
+    self.salesDate = ''
+    self.purchaseID = ''
+
+  def getBookPrice(self):
+    while True: # validation loop to get price
       try:
-        bookPrice = float(input("Enter the base price: $"))
-        if bookPrice > 0: # return variable if it is a positive, non-zero integer.
+        self.bookPrice = float(input("Enter item price: $"))
+        if price >= 0.0:
           return bookPrice
         else:
-          print("Invalid entry. Base price must be an integer that is positive and non-zero.")
-      except ValueError: # catch non-integer entries
-          print("Invalid entry. Base price must be an integer.")
+          print("Invalid entry. Please try again")
+      except ValueError:
+        print("Price must be numeric. Please try again.")
 
-  def calculateTax(self, bookPrice): #calculate the sales
-    calculatedTax = base_price + (base_price * tax)
-    return calculatedTax
+  def calculateTax(self):
+    return self.bookPrice * self.taxRate
 
-  @staticmethod # generate some kind of ID to attach to sale
-  def makePurchaseID():
+  def makePurchaseID(self):
+    self.customerName = input("Enter customers first and last name: ").strip()
+    now = datetime.datetime.now()
+    self.salesDate = '%02d%02d%02d%02d%02d%02d' %(now.hour, now.minute, now.second, now.month, now.day, now.year)
+    self.purchaseID = self.salesDate + self.customerName
+    return self.purchaseID

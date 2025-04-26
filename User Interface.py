@@ -1,17 +1,23 @@
+
 class UserInterface:
-    #Pause program until Enter is pressed
+
+    # Sample book list (drop when database is made)
+    books = [
+        BookListing(101, "Penguin Random House", "2020-09-01", 24.99),
+        BookListing(102, "HarperCollins", "2019-03-15", 18.50),
+        BookListing(103, "Simon & Schuster", "2021-07-22", 29.95)
+    ]
+
     @staticmethod
     def pressEnter():
-        input("Press Enter to continue...")
+        input("\nPress Enter to continue...")
 
-    #Clear screen by printing multiple newlines
     @staticmethod
     def clearScreen():
-        input("Press Enter to clear the screen...")
+        input("\nPress Enter to clear the screen...")
         print("\n" * 50)
         print("Screen Cleared")
 
-    #Display main menu with options
     @staticmethod
     def displayMainMenu():
         print("\n--- Main Menu ---")
@@ -20,10 +26,8 @@ class UserInterface:
         print("C. Wishlist")
         print("D. EXIT")
 
-        #Convert to uppercase to handle lowercase input
         choice = input("Select the letter of your choice: ").strip().upper()
 
-        #Navigate to the selected menu
         if choice == "A":
             UserInterface.displayUserMenu()
         elif choice == "B":
@@ -37,7 +41,6 @@ class UserInterface:
             UserInterface.pressEnter()
             UserInterface.displayMainMenu()
 
-    #Display user-related menu
     @staticmethod
     def displayUserMenu():
         print("\n--- User Menu ---")
@@ -58,15 +61,17 @@ class UserInterface:
             UserInterface.pressEnter()
             UserInterface.displayUserMenu()
 
-    #Method to show book catalog
     @staticmethod
     def displayBookCatalog():
         print("\n--- Book Catalog ---")
-        print("[Book list would go here]")
+        # Loop through the sample books and display each one
+        for book in UserInterface.books:
+            BookListingInterface.displayBookListing(book)
+            print("-" * 30)  # Divider between books
+
         UserInterface.pressEnter()
         UserInterface.displayMainMenu()
 
-    #Display wishlist menu
     @staticmethod
     def displayWishlist():
         print("\n--- Wishlist ---")
@@ -87,17 +92,14 @@ class UserInterface:
             UserInterface.pressEnter()
             UserInterface.displayWishlist()
 
-    #Gets a single character from user
     @staticmethod
     def getChar() -> str:
         return input("Enter a character: ").strip()
 
-    #Gets a full string from user
     @staticmethod
     def getString() -> str:
         return input("Enter a string: ").strip()
 
-    #Safely gets an integer input from user + validation
     @staticmethod
     def getInt() -> int:
         while True:
@@ -106,28 +108,25 @@ class UserInterface:
             except ValueError:
                 print("Invalid input. Please enter an integer.")
 
-    #Displays a fake user profile - [laceholder
+    # --- Placeholder methods for User Profile and Wishlist ---
     @staticmethod
     def displayProfile():
         print("Displaying user profile...")
         UserInterface.pressEnter()
         UserInterface.displayUserMenu()
 
-    #Editing the user's profile - placeholder
     @staticmethod
     def editProfile():
         print("Editing user profile...")
         UserInterface.pressEnter()
         UserInterface.displayUserMenu()
 
-    # Displays a wishlist - placeholder
     @staticmethod
     def displayWishList():
         print("Displaying wishlist...")
         UserInterface.pressEnter()
         UserInterface.displayWishlist()
 
-    #editing the wishlist -placeholder
     @staticmethod
     def editWishList():
         print("Editing wishlist...")
@@ -135,6 +134,6 @@ class UserInterface:
         UserInterface.displayWishlist()
 
 
-# starts the application by showing main menu
+# Entry point of the program
 if __name__ == "__main__":
     UserInterface.displayMainMenu()

@@ -1,7 +1,8 @@
 class SalesReport:
+  
+  @staticmethod
+  def printReport():
 
-
-class BookListingInterface:
 
 
 

@@ -1,6 +1,6 @@
 class SupportTicket: # create and edit support tickets
   def __init__(self):
-    self.tickets = {} # store tickets in dictionary with number as the key and the value a combination of the customers name + email + description
+    self.tickets = {} # store tickets in dictionary with the ticket number as the key
     self.ticketAccumulator = 1 # set an accumulator to act as the ticket id and keep track of tickets
 
 def getTicketNumber(self): # get the current ticket number and increase the accumulator

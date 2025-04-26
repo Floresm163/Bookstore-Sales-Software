@@ -4,9 +4,7 @@ class Customer:
   customerDateofBirth = getDateofBirth()
   customerEmail = getEmail()
   customerPhone = getPhone()
-
-  def __init__(customer):
-  
+      
   def getName():
     name = input("Enter name: ")
     return name
@@ -28,4 +26,17 @@ class Customer:
     return customerPhone
 
 class SalesTax:
+  bookPrice = 
+  
+  
+
+class SupportTicket:
+  ticketNumber = 
+  ticketDescription = 
+  customerName = 
+  customerEmail = 
+
+  def addSupporTicket():
+
+  
   

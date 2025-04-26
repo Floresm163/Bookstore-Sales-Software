@@ -22,18 +22,18 @@ class Customer: # get customer information
     return email
   
   def getPhone(): # get customers phone number
-    customerPhone = int(input("Enter phone number: ")
+    customerPhone = int(input("Enter phone number: "))
     return customerPhone
 
 class SalesTax: # calculate sales tax
   basePrice = getBookPrice()
-  customerName = 
+  customer
 
   def getBookPrice():
-    bookPrice = float(input("Enter price: ")
+    bookPrice = float(input("Enter price: "))
     return bookPrice
 
-  def calculateTax():
+  def calculateTax(): #calculate the sales
     base_price = getBookPrice()
     tax = .0625
     calculatedTax = base_price + (base_price * tax)
@@ -42,10 +42,7 @@ class SalesTax: # calculate sales tax
   @staticmethod # generate some kind of ID to attach to sale
   def makePurchaseID():
       
-    
   
-  
-
 class SupportTicket: # create and edit support tickets
   
   ticketNumber = 

@@ -1,4 +1,4 @@
-class Customer: # cet customer information
+class Customer: # get customer information
   customerName = getName()
   customerAddress = getAddress()
   customerDateofBirth = getDateofBirth()

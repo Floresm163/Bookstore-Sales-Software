@@ -105,7 +105,7 @@ class ManageSupportTicket:
       print(f'Ticket #{ticketNumber} has been removed.')
 
     
-if __name__ "__main__":
+if __name__ "__main__": # example for how these classes interact, may need to make a separate class to act as ticket support interface
   ticketSupport = SupportTicket()
   manageTicket = ManageSupportTicket()
   

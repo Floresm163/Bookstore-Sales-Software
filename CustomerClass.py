@@ -1,10 +1,10 @@
 class Customer: # get customer information and store in dictionary
-  def __init__(self): # set all variables to none by default
-    self.customerName = None
-    self.customerAddress = None
-    self.customerDateofBirth = None
-    self.customerEmail = None
-    self.customerphone = None
+  def __init__(self): # set all variables to empty by default
+    self.customerName = ''
+    self.customerAddress = ''
+    self.customerDateofBirth = ''
+    self.customerEmail = ''
+    self.customerphone = ''
 
 def getName(self): # get customers name
   while True: # start validation loop to make sure name is not empty

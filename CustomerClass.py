@@ -1,5 +1,6 @@
 class Customer: # get customer information and store in dictionary
   def __init__(self): # set all variables to empty by default
+    self.UserAccount = {'Name': 
     self.customerName = ''
     self.customerAddress = ''
     self.customerDateofBirth = ''

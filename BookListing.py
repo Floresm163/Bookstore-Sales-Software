@@ -1,27 +1,31 @@
 class BookListing:
-    #Constructor to initialize a book listing (added to created book and set values)
+
     def __init__(self, bookID: int, bookPublishing: str, bookPublishedDate: str, bookPrice: float):
+
         self.bookID = bookID
         self.bookPublishing = bookPublishing
         self.bookPublishedDate = bookPublishedDate
         self.bookPrice = bookPrice
 
-    #Getter for bookID
     def getBookID(self) -> int:
+        """Returns the ID of the book."""
         return self.bookID
 
-    #Getter for bookPublishing
     def getBookPublishing(self) -> str:
+        """Returns the publisher of the book."""
         return self.bookPublishing
 
-    #Getter for bookPublishedDate
-    def getPublishingDate(self) -> str:
+    def getBookPublishedDate(self) -> str:
+        """Returns the publication date of the book."""
         return self.bookPublishedDate
 
-    #Setter for bookPrice
-    def setPrice(self, newPrice: float):
-        self.bookPrice = newPrice
+    def setPrice(self, newPrice: float) -> None:
+        """Sets the price of the book. Ensures price is non-negative."""
+        if newPrice >= 0:
+            self.bookPrice = newPrice
+        else:
+            print("Price cannot be negative!")
 
-    #Get current price(added for get price)
     def getPrice(self) -> float:
+        """Returns the price of the book."""
         return self.bookPrice

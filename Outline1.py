@@ -737,6 +737,6 @@ class ManageSupportTicket: # create class to manage support tickets
       print(f'Ticket #{ticketNumber} has been removed.')
 
 
-if __name__ = "__main__":
+if __name__ == "__main__":
     login = LoginInterface()
     login.UserLogin()

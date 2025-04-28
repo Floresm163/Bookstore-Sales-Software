@@ -826,7 +826,7 @@ class UserAccountManager:
         print("\n--- All User Accounts ---")
         for i, (user_name, account_info) in enumerate(self.UserAccounts.items(), 1):
             print(f"\nAccount #{i}")
-            print(f'Username: {username}')
+            print(f'Username: {user_name}')
             print(f'Name: {account_info["Name"]}')
             print(f'Password: {account_info["Password"]}')
             print(f'Email: {account_info["eMail"]}')

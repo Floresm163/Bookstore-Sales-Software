@@ -34,7 +34,7 @@ class LoginInterface: # create class to handle user login
             else:
                 print("Invalid username or password. Try again.")
 
-        self.designationInterface(self, user_name)
+        self.designationInterface(user_name)
 
     def authenticateLogin(self, user_name, password): # authenticate if the username is in user accounts dictionary
         if user_name in self.UserAccountManager.UserAccounts:
@@ -377,7 +377,7 @@ class CustomerInterface:
                     self.supportTickets.displayCustomerSupportTicketMenu()
                 elif choice == 6:
                     print("Thank you for visiting!")
-                    self.logout = LoginInterface()
+                    self.logout.loginUser()
                 else:
                     print("Invalid Entry. Please enter an integer bewtween 1-6.")
             except ValueError:
@@ -401,6 +401,7 @@ class CustomerInterface:
                 elif choice == 4:
                     print("Thank you for visiting!")
                     self.logout.loginUser()
+                    return
                 else:
                     print("Invalid Entry. Please enter an integer bewtween 1-4.")
             except ValueError:
@@ -419,7 +420,7 @@ class CustomerInterface:
                     self.bookList.viewBookList()
                 elif choice == 2:
                     self.bookList.searchBookList()
-                elif choise == 3:
+                elif choice == 3:
                     self.displayCustomerMenu()
                 elif choice == 4:
                     print("Thank you for visiting!")
@@ -556,7 +557,7 @@ class UserAccountManager:
 
     def viewAccounts(self):
         print("\n--- All User Accounts ---")
-        for i, (user_name, account_info_ in enumerate(self.UserAccounts.items(), 1)):
+        for i, (user_name, account_info in enumerate(self.UserAccounts.items(), 1)):
             print(f"\nAccount #{i}")
             print(f'Username: {username}')
             print(f'Name: {account_info["Name"]}')
@@ -610,7 +611,7 @@ class UserAccountManager:
     def getPhone(self): # get users phone number
         while True:
             try:
-                phone = int(input("Enter phone number: "))
+                phone = (input("Enter phone number: ").strip()
                 if phone.isdigit() and len(phone) == 10:  # basic validation
                     return phone
                 else:
@@ -651,10 +652,10 @@ class SupportTicket:
     def getCustomerEmail(self): # get the customers email address
         while True:
             email = input("Enter customer email: ")
-        if '@' in email: # if email contains '@' then return email
-            return email
-        else:
-            print("Invalid entry. Support ticket must contain a valid email.")
+            if '@' in email: # if email contains '@' then return email
+                return email
+            else:
+                print("Invalid entry. Support ticket must contain a valid email.")
 
     def getCustomerName(self): # get the customers name
         while True: 
@@ -693,7 +694,7 @@ class ManageSupportTicket: # create class to manage support tickets
       print(f'Ticket #{ticketNumber} not found.')
       return False
 
-    ticket = self.Support[ticketNumber]
+    ticket = self.Support.tickets[ticketNumber]
     print(f'Editing Ticket #:{ticketNumber}')
     print(f'Enter new value or press enter to skip field.')
   

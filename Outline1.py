@@ -1,31 +1,32 @@
 
 class BookListing:
     #Constructor to initialize a book listing (added to created book and set values)
-    def __init__(self, bookID: int, bookPublishing: str, bookPublishedDate: str, bookPrice: float):
+    def __init__(self, bookTitle: str, bookID: int, bookPublisher: str, bookAuthor: str, bookGenre: str):
+        self.bookTitle = bookTitle
         self.bookID = bookID
-        self.bookPublishing = bookPublishing
-        self.bookPublishedDate = bookPublishedDate
-        self.bookPrice = bookPrice
+        self.bookPublisher = bookPublisher
+        self.bookAuthor = bookAuthor
+        self.bookGenre = bookGenre
 
+    #getter for book title
+    def getTitle(self) -> str:
+        return self.bookTitle
+    
     #Getter for bookID
     def getBookID(self) -> int:
         return self.bookID
 
-    #Getter for bookPublishing
-    def getBookPublishing(self) -> str:
-        return self.bookPublishing
+    #Getter for book Publisher
+    def getPublisher(self) -> str:
+        return self.bookPublisher
 
-    #Getter for bookPublishedDate
-    def getPublishingDate(self) -> str:
-        return self.bookPublishedDate
+    #Getter for book Author
+    def getAuthor(self) -> str:
+        return self.bookAuthor
 
-    #Setter for bookPrice
-    def setPrice(self, newPrice: float):
-        self.bookPrice = newPrice
-
-    #Get current price(added for get price)
-    def getPrice(self) -> float:
-        return self.bookPrice
+    #Getter for book Genre
+    def getGenre(self) -> str:
+        return self.bookGenre
 
 class Wishlist:
     # Creating an empty wishlist
@@ -57,15 +58,15 @@ class Wishlist:
 
 
 class BookListingInterface:
-
     @staticmethod
     def displayBookListing(book: 'BookListing'):
         # Display the details of a BookListing object
         print("\n--- Book Listing ---")
-        print(f"The book ID: {book.getBookID()}")
-        print(f"The book was published by: {book.getBookPublishing()}")
-        print(f"The date the book was published: {book.getPublishingDate()}")
-        print(f"The price of the book: ${book.getPrice():.2f}")
+        print(f"Title: {book.getTitle()}")
+        print(f"Book ID: {book.getBookID()}")
+        print(f"Publisher: {book.getPublisher()}")
+        print(f"Author: {book.getAuthor()}")
+        print(f"Genre: {book.getGenre()}")
 
         
 class LoginInterface: # create class to handle user login 

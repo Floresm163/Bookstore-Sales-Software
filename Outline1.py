@@ -1,6 +1,6 @@
 class LoginInterface: # create class to handle user login 
     def __init__(self): # initialize function to call other classes to retreive info
-        self.UserAccountManager = AccountManager()
+        self.UserAccountManager = UserAccountManager()
         self.AdministratorMenu = AdministratorInterface()
         self.StaffMenu = StaffInterface()
         self.CustomerMenu = CustomerInterface()
@@ -66,7 +66,7 @@ class LoginInterface: # create class to handle user login
           
 class AdministratorInterface:
     def __init__(self):
-        self.accountManager = AccountManagerInterface()
+        self.accountManager = UserUserAccountManager()
         self.bookList = BookListInterface()
         self.preOrders = PreOrderInterface()
         self.ticketSupport = SupportTicket()
@@ -243,7 +243,7 @@ class AdministratorInterface:
 
 class StaffInterface:
     def __init__(self):
-        self.accountManager = AccountManagerInterface()
+        self.accountManager = UserUserAccountManager()
         self.bookList = BookListInterface()
         self.preOrders = PreOrderInterface()
         self.logout = LoginInterface()
@@ -345,7 +345,7 @@ class StaffInterface:
 
 class CustomerInterface:
     def __init__(self):
-        self.accountManager = AccountManagerInterface()
+        self.accountManager = UserUserAccountManager()
         self.bookList = BookListInterface()
         self.preOrders = PreOrderInterface()
         self.supportTickets = SupportTicketInterface()
@@ -454,8 +454,8 @@ class CustomerInterface:
 
 class GuestInterface:
     def __init__(self):
-        self.bookList = BookListInterface
-        self.logout = LoginInterface
+        self.bookList = BookListInterface()
+        self.logout = LoginInterface()
 
     def displayGuestMenu(self):
         print("\n--- Guest Menu ---")

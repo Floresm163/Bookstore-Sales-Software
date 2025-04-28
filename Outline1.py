@@ -66,7 +66,7 @@ class LoginInterface: # create class to handle user login
           
 class AdministratorInterface:
     def __init__(self):
-        self.accountManager = UserUserAccountManager()
+        self.accountManager = UserAccountManager()
         self.bookList = BookListInterface()
         self.preOrders = PreOrderInterface()
         self.ticketSupport = SupportTicket()
@@ -243,7 +243,7 @@ class AdministratorInterface:
 
 class StaffInterface:
     def __init__(self):
-        self.accountManager = UserUserAccountManager()
+        self.accountManager = UserAccountManager()
         self.bookList = BookListInterface()
         self.preOrders = PreOrderInterface()
         self.logout = LoginInterface()
@@ -345,7 +345,7 @@ class StaffInterface:
 
 class CustomerInterface:
     def __init__(self):
-        self.accountManager = UserUserAccountManager()
+        self.accountManager = UserAccountManager()
         self.bookList = BookListInterface()
         self.preOrders = PreOrderInterface()
         self.supportTickets = SupportTicketInterface()
@@ -505,6 +505,7 @@ class UserAccountManager:
         designation = 3 # administrator = 1, staff = 2, and customer = 3. Designation is set to 3 by default and can only be changed by an administrator
 
         self.UserAccounts[user_name] = {'Name': name, 'Username': user_name, 'Password': password, 'eMail': email, 'Phone': phone, 'Designation': designation}
+        self.UserAccounts[TestAdmin] = {'Name': 'Admin', 'Username': 'TA', 'Password': 'Testadmin', 'eMail': 'testadmin@yahoo.com', 'Phone': '1111111111'., 'Designation': 1}
         # store values in the dictionary with the users user name as the key
         return user_name 
 

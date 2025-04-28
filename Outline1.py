@@ -39,14 +39,22 @@ class LoginInterface: # create class to handle user login
     def authenticateLogin(self, user_name, password): # authenticate if the username is in user accounts dictionary
         if user_name in self.UserAccountManager.UserAccounts:
             user = self.UserAccountManager.UserAccounts[user_name]
-            if user.UserAccounts['Password'] == password:
+            #if user.UserAccounts['Password'] == password:
+            if user['Password'] == password:
                 return user
         else:
             return None
 
     def designationInterface(self, user_name): # function to direct users to correct display menu
-        designation = user.UserAccounts['Designation']
-        user_name = user.UserAccounts['Username']
+        user = self.UserAccountManager.UserAccounts.get(user_name)
+
+        if user is None:
+            print('User not found.')
+            return
+        #designation = user.UserAccounts['Designation']
+        designation = user['Designation']
+        #user_name = user.UserAccounts['Username']
+        user_name = user['Username']
 
         if designation == 1:
             self.AdministratorMenu.displayAdministratorMenu()
@@ -76,7 +84,7 @@ class AdministratorInterface:
         print("5. EXIT")
         while True:
             try:
-                choice = int(input("Select the number of your choice: ")).strip()
+                choice = int(input("Select the number of your choice: "))
                 if choice == 1:
                     self.adminAccountMenu()
                 elif choice == 2:
@@ -104,7 +112,7 @@ class AdministratorInterface:
         print("7. EXIT")
         while True:
             try:
-                choice = int(input("Select the number of your choice: ")).strip()
+                choice = int(input("Select the number of your choice: "))
                 if choice == 1:
                     self.accountManager.viewAccounts()
                 elif choice == 2:
@@ -136,7 +144,7 @@ class AdministratorInterface:
         print("7. EXIT")
         while True:
             try:
-                choice = int(input("Select the number of your choice: ")).strip()
+                choice = int(input("Select the number of your choice: "))
                 if choice == 1:
                     self.bookList.viewBookList()
                 elif choice == 2:
@@ -167,7 +175,7 @@ class AdministratorInterface:
         print("6. EXIT")
         while True:
             try:
-                choice = int(input("Select the number of your choice: ")).strip()
+                choice = int(input("Select the number of your choice: "))
                 if choice == 1:
                     self.preOrders.viewPreOrderLists()
                 elif choice == 2:
@@ -249,7 +257,7 @@ class StaffInterface:
         print("4. EXIT")
         while True:
             try:
-                choice = int(input("Select the number of your choice: ")).strip()
+                choice = int(input("Select the number of your choice: "))
                 if choice == 1:
                     self.staffAccountMenu()
                 elif choice == 2:
@@ -272,12 +280,12 @@ class StaffInterface:
         print("4. EXIT")
         while True:
             try:
-                choice = int(input("Select the number of your choice: ")).strip()
+                choice = int(input("Select the number of your choice: "))
                 if choice == 1:
                     self.accountManager.createAccount()
                 elif choice == 2:
                     self.accountManager.editAccount()
-                elif choise == 3:
+                elif choice == 3:
                     self.displayStaffMenu()
                 elif choice == 4:
                     print("Thank you for visiting!")
@@ -296,7 +304,7 @@ class StaffInterface:
         print("4. EXIT")
         while True:
             try:
-                choice = int(input("Select the number of your choice: ")).strip()
+                choice = int(input("Select the number of your choice: "))
                 if choice == 1:
                     self.bookList.viewBookList()
                 elif choice == 2:
@@ -321,7 +329,7 @@ class StaffInterface:
         print("4. EXIT")
         while True:
             try:
-                choice = int(input("Select the number of your choice: ")).strip()
+                choice = int(input("Select the number of your choice: "))
                 if choice == 1:
                     self.preOrders.viewPreOrderList()
                 elif choice == 2:
@@ -356,7 +364,7 @@ class CustomerInterface:
 
         while True:
             try:
-                choice = int(input("Select the number of your choice: ")).strip()
+                choice = int(input("Select the number of your choice: "))
                 if choice == 1:
                     self.accountManager.displayCustomerAccountMenu()
                 elif choice == 2:
@@ -383,7 +391,7 @@ class CustomerInterface:
         print("4. EXIT")
         while True:
             try:
-                choice = int(input("Select the number of your choice: ")).strip()
+                choice = int(input("Select the number of your choice: "))
                 if choice == 1:
                     self.accountManager.viewAccount()
                 elif choice == 2:
@@ -406,7 +414,7 @@ class CustomerInterface:
         print("4. EXIT")
         while True:
             try:
-                choice = int(input("Select the number of your choice: ")).strip()
+                choice = int(input("Select the number of your choice: "))
                 if choice == 1:
                     self.bookList.viewBookList()
                 elif choice == 2:
@@ -429,7 +437,7 @@ class CustomerInterface:
         print("4. EXIT")
         while True:
             try:
-                choice = int(input("Select the number of your choice: ")).strip()
+                choice = int(input("Select the number of your choice: "))
                 if choice == 1:
                     self.preOrders.viewPreOrderList()
                 elif choice == 2:
@@ -456,7 +464,7 @@ class GuestInterface:
 
         while True:
             try:
-                choice = int(input("Select the number of your choice: ")).strip()
+                choice = int(input("Select the number of your choice: "))
                 if choice == 1:
                     self.bookList.displayBookListMenu()
                 elif choice == 2:
@@ -526,7 +534,7 @@ class UserAccountManager:
     
         while True:
           try:
-            choice = int(input("Enter a choice between 1-5: ")).strip()
+            choice = int(input("Enter a choice between 1-5: "))
             if choice == 1:
               user.getName()
             elif choice == 2:
@@ -570,7 +578,7 @@ class UserAccountManager:
 
     def getUsername(self): # get users username
         while True: 
-            user_name = input("Enter user name: ").strip().upper()
+            user_name = input("Enter user name: ").strip()
             if user_name: 
                 if user_name not in self.UserAccounts: # check to make sure the username is not already in use
                     return user_name
@@ -593,7 +601,7 @@ class UserAccountManager:
 
     def getEmail(self): # get users email
         while True: 
-            email = input("Enter eMail address: ")
+            email = input("Enter Email address: ")
             if '@' in email: # basic email validation
                 return email
             else:
@@ -602,8 +610,8 @@ class UserAccountManager:
     def getPhone(self): # get users phone number
         while True:
             try:
-                phone = int(input("Enter phone number: ")).strip()
-                if len(phone) == 10:  # basic validation
+                phone = int(input("Enter phone number: "))
+                if phone.isdigit() and len(phone) == 10:  # basic validation
                     return phone
                 else:
                     print('Invalid entry. Enter a valid phone number.')

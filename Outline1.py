@@ -39,7 +39,6 @@ class LoginInterface: # create class to handle user login
     def authenticateLogin(self, user_name, password): # authenticate if the username is in user accounts dictionary
         if user_name in self.UserAccountManager.UserAccounts:
             user = self.UserAccountManager.UserAccounts[user_name]
-            #if user.UserAccounts['Password'] == password:
             if user['Password'] == password:
                 return user
         else:
@@ -221,7 +220,7 @@ class AdministratorInterface:
                     self.manageTicket.removeSupportTicket(ticket) # remove ticket
                 elif menuChoice == 6:
                     self.displayAdministratorMenu() # return to menu
-                elif choice == 7:
+                elif menuChoice == 7:
                     print("Thank you for visiting!")
                     self.logout.loginUser()
                 else:
@@ -557,7 +556,7 @@ class UserAccountManager:
 
     def viewAccounts(self):
         print("\n--- All User Accounts ---")
-        for i, (user_name, account_info in enumerate(self.UserAccounts.items(), 1)):
+        for i, (user_name, account_info) in enumerate(self.UserAccounts.items(), 1):
             print(f"\nAccount #{i}")
             print(f'Username: {username}')
             print(f'Name: {account_info["Name"]}')
@@ -611,7 +610,7 @@ class UserAccountManager:
     def getPhone(self): # get users phone number
         while True:
             try:
-                phone = (input("Enter phone number: ").strip()
+                phone = (input("Enter phone number: ")).strip()
                 if phone.isdigit() and len(phone) == 10:  # basic validation
                     return phone
                 else:

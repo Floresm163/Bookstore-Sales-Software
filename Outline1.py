@@ -29,33 +29,61 @@ class BookListing:
         return self.bookGenre
 
 class Wishlist:
-    # Creating an empty wishlist
     def __init__(self):
         self.books = []
 
-    # Displaying your wishlist if you have a wishlist
     def displayWishlist(self) -> None:
         if not self.books:
             print('Your Wishlist is empty.')
         else:
             print('----Your Wishlist-----')
             for book in self.books:
-                print(f'{book.getBookPublishing()} - ${book.getPrice():.2f}')
+                print(f'{book.getTitle()} by {book.getAuthor()}')
 
-    # Adding a book from the BookListing to the Wishlist
+    def displayWishlistMenu(self) -> None:
+        while True:
+            print("\n--- Wishlist Menu ---")
+            print("1. View Wishlist")
+            print("2. Add Book to Wishlist")
+            print("3. Remove Book from Wishlist")
+            print("4. Return to Customer Menu")
+            try:
+                choice = int(input("Enter your choice: "))
+                if choice == 1:
+                    self.displayWishlist()
+                elif choice == 2:
+                    bookTitle = input("Enter book title: ")
+                    bookID = int(input("Enter book ID: "))
+                    bookPublisher = input("Enter publisher: ")
+                    bookAuthor = input("Enter author: ")
+                    bookGenre = input("Enter genre: ")
+                    newBook = BookListing(bookTitle, bookID, bookPublisher, bookAuthor, bookGenre)
+                    self.addBook(newBook)
+                elif choice == 3:
+                    try:
+                        bookID = int(input("Enter Book ID to remove: "))
+                        self.removeBook(bookID)
+                    except ValueError:
+                        print("Invalid Book ID.")
+                elif choice == 4:
+                    break
+                else:
+                    print("Invalid Entry. Please enter 1-4.")
+            except ValueError:
+                print("Invalid Entry. Please enter 1-4.")
+
     def addBook(self, Wishlistbook: 'BookListing') -> str:
         self.books.append(Wishlistbook)
-        print(f'Book: {Wishlistbook.getBookID()} added to the wishlist.')
+        print(f'Book: {Wishlistbook.getTitle()} added to the wishlist.')
 
-    # Removing a book from the Wishlist if the book is in the wishlist
     def removeBook(self, bookID: int) -> str:
         for book in self.books:
             if book.getBookID() == bookID:
                 self.books.remove(book)
-                print(f'Book: {bookID} was removed from the wishlist.')
+                print(f'Book ID {bookID} was removed from the wishlist.')
                 return
         print(f'Book with ID {bookID} was not found in the wishlist.')
-
+        
 class PreOrder:
     # Creating a new PreOrder object when called
     def __init__(self):
@@ -87,9 +115,10 @@ class PreOrder:
 
 
 class BookListingInterface:
-    @staticmethod
-    def displayBookListing(book: 'BookListing'):
-        # Display the details of a BookListing object
+   def __init__(self):
+        self.bookCatalog = []
+
+    def displayBookListing(self, book: 'BookListing'):
         print("\n--- Book Listing ---")
         print(f"Title: {book.getTitle()}")
         print(f"Book ID: {book.getBookID()}")
@@ -97,7 +126,117 @@ class BookListingInterface:
         print(f"Author: {book.getAuthor()}")
         print(f"Genre: {book.getGenre()}")
 
+    def viewBookList(self):
+        if not self.bookCatalog:
+            print("No books available.")
+        else:
+            print("\n--- Book Catalog ---")
+            for book in self.bookCatalog:
+                self.displayBookListing(book)
+
+    def searchBookList(self):
+        if not self.bookCatalog:
+            print("No books to search.")
+            return
+        title = input("Enter title to search: ").strip().lower()
+        found = False
+        for book in self.bookCatalog:
+            if title in book.getTitle().lower():
+                self.displayBookListing(book)
+                found = True
+        if not found:
+            print("Book not found.")
+
+    def addEntry(self):
+        bookTitle = input("Enter book title: ")
+        bookID = int(input("Enter book ID: "))
+        bookPublisher = input("Enter publisher: ")
+        bookAuthor = input("Enter author: ")
+        bookGenre = input("Enter genre: ")
+        newBook = BookListing(bookTitle, bookID, bookPublisher, bookAuthor, bookGenre)
+        self.bookCatalog.append(newBook)
+        print("Book added successfully.")
+
+    def deleteEntry(self):
+        bookID = int(input("Enter Book ID to delete: "))
+        for book in self.bookCatalog:
+            if book.getBookID() == bookID:
+                self.bookCatalog.remove(book)
+                print("Book removed successfully.")
+                return
+        print("Book not found.")
+
+    def updateEntry(self):
+        bookID = int(input("Enter Book ID to update: "))
+        for book in self.bookCatalog:
+            if book.getBookID() == bookID:
+                book.bookTitle = input("Enter new title: ")
+                book.bookPublisher = input("Enter new publisher: ")
+                book.bookAuthor = input("Enter new author: ")
+                book.bookGenre = input("Enter new genre: ")
+                print("Book updated successfully.")
+                return
+        print("Book not found.")
         
+class PreOrderInterface:
+    def __init__(self):
+        self.preOrders = []
+
+    def viewPreOrderLists(self):
+        if not self.preOrders:
+            print("No pre-orders available.")
+        else:
+            print("\n--- Pre-Orders ---")
+            for preorder in self.preOrders:
+                print(f"Book ID: {preorder.getBookId()}, Customer: {preorder.getCustomerName()}, Email: {preorder.getCustomerEmail()}")
+
+    def addPreOrderList(self):
+        preorder = PreOrder()
+        if preorder.addPreorder() == "Pre-Order placed successfully.":
+            self.preOrders.append(preorder)
+            print("Pre-order successfully added.")
+
+    def editPreOrderList(self):
+        print("Feature coming soon: Edit Pre-Order List.")
+
+    def calculatePreOrderTotal(self):
+        print("Feature coming soon: Calculate Pre-Order Total.")
+        
+class SupportTicketInterface:
+    def __init__(self):
+        self.tickets = []
+
+    def displayCustomerSupportTicketMenu(self):
+        print("\n--- Customer Support Menu ---")
+        print("1. Create a Support Ticket")
+        print("2. View Your Tickets")
+        print("3. Return to Customer Menu")
+        while True:
+            try:
+                choice = int(input("Select the number of your choice: "))
+                if choice == 1:
+                    self.addSupportTicket()
+                elif choice == 2:
+                    self.viewSupportTickets()
+                elif choice == 3:
+                    break
+                else:
+                    print("Invalid Entry. Please enter 1-3.")
+            except ValueError:
+                print("Invalid Entry. Please enter 1-3.")
+
+    def addSupportTicket(self):
+        ticket = SupportTicket()
+        ticketNumber = ticket.addSupportTicket()
+        self.tickets.append(ticketNumber)
+
+    def viewSupportTickets(self):
+        if not self.tickets:
+            print("No tickets found.")
+        else:
+            print("\n--- Your Support Tickets ---")
+            for ticketNumber in self.tickets:
+                print(f"Ticket #{ticketNumber}")
 class LoginInterface: # create class to handle user login 
     def __init__(self): # initialize function to call other classes to retreive info
         self.UserAccountManager = UserAccountManager()
@@ -397,10 +536,10 @@ class StaffInterface:
     def staffBookListMenu(self):
         print("\n--- Manage Book List ---")
         print("1. View Book List")
-        print("1. Search Book List")
-        print("2. Update Entry")
-        print("3. Return to Administrator Menu")
-        print("4. EXIT")
+        print("2. Search Book List")
+        print("3. Update Entry")
+        print("4. Return to Administrator Menu")
+        print("5. EXIT")
         while True:
             try:
                 choice = int(input("Select the number of your choice: "))
@@ -812,8 +951,11 @@ class SupportTicket:
         return ticketNumber
 
 class ManageSupportTicket: # create class to manage support tickets
-  def __init__(self, supportTickets):
-    self.Support = supportTickets
+  def __init__(self, supportTickets=None):
+        if supportTickets is None:
+            self.Support = SupportTicket()
+        else:
+            self.Support = supportTickets
 
   def editSupportTicket(self, ticketNumber): # edit an already existing ticket
     if ticketNumber not in self.Support.tickets: # if ticket not found print error message

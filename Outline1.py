@@ -1,5 +1,5 @@
 class LoginInterface: # create class to handle user login 
-    def __init__(self, userManager): # initialize function to call other classes to retreive info
+    def __init__(self): # initialize function to call other classes to retreive info
         self.UserAccountManager = AccountManager()
         self.AdministratorMenu = AdministratorInterface()
         self.StaffMenu = StaffInterface()

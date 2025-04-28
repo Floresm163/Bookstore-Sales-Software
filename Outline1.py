@@ -548,9 +548,9 @@ class UserAccountManager:
               print("Edit cancelled.")
               return False
             else:
-              print("Invalid entry. Enter a number between 1-8.")
+              print("Invalid entry. Enter a number between 1-5.")
           except ValueError:
-            print("Invalid entry. Choice must be an integer.")
+            print("Invalid entry. Enter a number between 1-5.")
         
         print("User information succesfully updated.")
         return True

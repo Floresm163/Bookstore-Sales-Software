@@ -33,7 +33,7 @@ class Wishlist:
         self.books = []
 
     # Displaying your wishlist if you have a wishlist
-    def displayWishList(self) -> None:
+    def displayWishlist(self) -> None:
         if not self.books:
             print('Your Wishlist is empty.')
         else:
@@ -42,7 +42,7 @@ class Wishlist:
                 print(f'{book.getBookPublishing()} - ${book.getPrice():.2f}')
 
     # Adding a book from the BookListing to the Wishlist
-    def addToWishlist(self, Wishlistbook: 'BookListing') -> str:
+    def addBook(self, Wishlistbook: 'BookListing') -> str:
         self.books.append(Wishlistbook)
         print(f'Book: {Wishlistbook.getBookID()} added to the wishlist.')
 
@@ -419,7 +419,7 @@ class CustomerInterface:
         self.bookList = BookListInterface()
         self.preOrders = PreOrderInterface()
         self.supportTickets = SupportTicketInterface()
-        self.wishlistManager = WishlistInterface()
+        self.wishlistManager = Wishlist()
         self.logout = LoginInterface()
     
     def displayCustomerMenu(self):
@@ -476,7 +476,7 @@ class CustomerInterface:
             except ValueError:
                 print("Invalid Entry. Please enter an integer bewtween 1-4.")
 
-    def staffBookListMenu(self):
+    def customerBookListMenu(self):
         print("\n--- Book List ---")
         print("1. View Book List")
         print("2. Search Book List")
@@ -499,10 +499,10 @@ class CustomerInterface:
             except ValueError:
                 print("Invalid Entry. Please enter an integer bewtween 1-4.")
         
-    def staffPreOrderMenu(self):
+    def customerPreOrderMenu(self):
         print("\n--- Pre-Orders ---")
         print("1. View Open Pre-Orders")
-        print("2. Add  Pre-Order List")
+        print("2. Add to Pre-Order List")
         print("3. Return to Menu")
         print("4. EXIT")
         while True:
@@ -512,6 +512,32 @@ class CustomerInterface:
                     self.preOrders.viewPreOrderList()
                 elif choice == 2:
                     self.preOrders.addEntryPreOrderList()
+                elif choice == 3:
+                    self.displayCustomerMenu()
+                elif choice == 4:
+                    print("Thank you for visiting!")
+                    self.logout.loginUser()
+                else:
+                    print("Invalid Entry. Please enter an integer bewtween 1-4.")
+            except ValueError:
+                print("Invalid Entry. Please enter an integer bewtween 1-4.")
+
+    def customerWishList(self):
+        print("\n--- WishLists ---")
+        print("1. Display Wishlists")
+        print("2. Add to Wishlist")
+        print("2. Remove from Wishlist")
+        print("3. Return to Menu")
+        print("4. EXIT")
+        while True:
+            try:
+                choice = int(input("Select the number of your choice: "))
+                if choice == 1:
+                    self.wishlistManager.displayWishlist()
+                elif choice == 2:
+                    self.wishlistManager.addBook()
+                elif choice == 2:
+                    self.wishlistManager.removeBook()
                 elif choice == 3:
                     self.displayCustomerMenu()
                 elif choice == 4:

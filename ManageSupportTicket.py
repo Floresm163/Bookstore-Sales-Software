@@ -1,6 +1,9 @@
 class ManageSupportTicket: # create class to manage support tickets
-  def __init__(self, supportTickets):
-    self.Support = supportTickets
+ def __init__(self, supportTickets=None):
+        if supportTickets is None:
+            self.Support = SupportTicket()
+        else:
+            self.Support = supportTickets
 
   def editSupportTicket(self, ticketNumber): # edit an already existing ticket
     if ticketNumber not in self.Support.tickets: # if ticket not found print error message

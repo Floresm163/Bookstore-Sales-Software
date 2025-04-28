@@ -609,13 +609,11 @@ class UserAccountManager:
                 
     def getPhone(self): # get users phone number
         while True:
-            try:
-                phone = (input("Enter phone number: ")).strip()
-                if phone.isdigit() and len(phone) == 10:  # basic validation
-                    return phone
-                else:
-                    print('Invalid entry. Enter a valid phone number.')
-            except ValueError:
+            phone = (input("Enter phone number: ")).strip()
+            if phone.isdigit() and len(phone) == 10:  # basic validation
+                return phone
+            else:
+                print('Invalid entry. Enter a valid phone number.')
 
     def displayAccountInformation(self, user_name):
         if user_name in self.UserAccounts:

@@ -735,3 +735,8 @@ class ManageSupportTicket: # create class to manage support tickets
     if ticketNumber in self.Support.tickets:
       del self.Support.tickets[ticketNumber]
       print(f'Ticket #{ticketNumber} has been removed.')
+
+
+if __name__ = "__main__":
+    login = LoginInterface()
+    login.UserLogin()

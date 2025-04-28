@@ -115,7 +115,7 @@ class PreOrder:
 
 
 class BookListingInterface:
-   def __init__(self):
+    def __init__(self):
         self.bookCatalog = []
 
     def displayBookListing(self, book: 'BookListing'):
@@ -125,7 +125,7 @@ class BookListingInterface:
         print(f"Publisher: {book.getPublisher()}")
         print(f"Author: {book.getAuthor()}")
         print(f"Genre: {book.getGenre()}")
-
+        
     def viewBookList(self):
         if not self.bookCatalog:
             print("No books available.")
@@ -257,8 +257,10 @@ class LoginInterface: # create class to handle user login
                     break
                 elif loginChoice == 2:
                     self.GuestMenu.displayGuestMenu() # if guest login is selected direct to guestmenu class
+                    return
                 elif loginChoice == 3:
                     self.UserAccountManager.createAccount() # if create account is selected direct to 
+                    return
                 else:
                     print("Invalid entry. Enter a choice between 1-3.")
             except ValueError: # catch non-integer entries
@@ -280,19 +282,19 @@ class LoginInterface: # create class to handle user login
             user = self.UserAccountManager.UserAccounts[user_name]
             if user['Password'] == password:
                 return user
-        else:
-            return None
+        ##else:
+        return None
 
     def designationInterface(self, user_name): # function to direct users to correct display menu
-        user = self.UserAccountManager.UserAccounts.get(user_name)
-
-        if user is None:
-            print('User not found.')
-            return
-        #designation = user.UserAccounts['Designation']
+       ## user = self.UserAccountManager.UserAccounts.get(user_name)
         designation = user['Designation']
+       ## if user is None:
+         ##   print('User not found.')
+          ##  return
+        #designation = user.UserAccounts['Designation']
+        ##designation = user['Designation']
         #user_name = user.UserAccounts['Username']
-        user_name = user['Username']
+        ##user_name = user['Username']
 
         if designation == 1:
             self.AdministratorMenu.displayAdministratorMenu()
@@ -306,12 +308,12 @@ class LoginInterface: # create class to handle user login
 class AdministratorInterface:
     def __init__(self):
         self.accountManager = UserAccountManager()
-        self.bookList = BookListInterface()
+        self.bookList = BookListingInterface()
         self.preOrders = PreOrderInterface()
         self.ticketSupport = SupportTicket()
         self.manageTicket = ManageSupportTicket()
         self.designation = UserAccountDesignation()
-        self.logout = LoginInterface()
+        ##self.logout = LoginInterface()
     
     def displayAdministratorMenu(self):
         print("\n--- Administrator Menu ---")
@@ -483,9 +485,9 @@ class AdministratorInterface:
 class StaffInterface:
     def __init__(self):
         self.accountManager = UserAccountManager()
-        self.bookList = BookListInterface()
+        self.bookList = BookListingInterface()
         self.preOrders = PreOrderInterface()
-        self.logout = LoginInterface()
+        ##self.logout = LoginInterface()
     
     def displayStaffMenu(self):
         print("\n--- Staff Menu ---")
@@ -585,11 +587,11 @@ class StaffInterface:
 class CustomerInterface:
     def __init__(self):
         self.accountManager = UserAccountManager()
-        self.bookList = BookListInterface()
+        self.bookList = BookListingInterface()
         self.preOrders = PreOrderInterface()
         self.supportTickets = SupportTicketInterface()
         self.wishlistManager = Wishlist()
-        self.logout = LoginInterface()
+       ## self.logout = LoginInterface()
     
     def displayCustomerMenu(self):
         print("\n--- User Menu ---")
@@ -719,8 +721,8 @@ class CustomerInterface:
 
 class GuestInterface:
     def __init__(self):
-        self.bookList = BookListInterface()
-        self.logout = LoginInterface()
+        self.bookList = BookListingInterface()
+        ##self.logout = LoginInterface()
 
     def displayGuestMenu(self):
         print("\n--- Guest Menu ---")
@@ -770,7 +772,7 @@ class UserAccountManager:
         designation = 3 # administrator = 1, staff = 2, and customer = 3. Designation is set to 3 by default and can only be changed by an administrator
 
         self.UserAccounts[user_name] = {'Name': name, 'Username': user_name, 'Password': password, 'eMail': email, 'Phone': phone, 'Designation': designation}
-        self.UserAccounts[TestAdmin] = {'Name': 'Admin', 'Username': 'TA', 'Password': 'Testadmin', 'eMail': 'testadmin@yahoo.com', 'Phone': '1111111111'., 'Designation': 1}
+        self.UserAccounts["TestAdmin"] = {'Name': 'Admin', 'Username': 'TA', 'Password': 'Testadmin', 'eMail': 'testadmin@yahoo.com', 'Phone': '1111111111', 'Designation': 1}
         # store values in the dictionary with the users user name as the key
         return user_name 
 
@@ -902,7 +904,8 @@ class SupportTicket:
         self.ticketAccumulator = 1 # set an accumulator to act as the ticket id and keep track of tickets
 
     def getTicketNumber(self): # get the current ticket number and increase the accumulator
-        ticketNumber = self.ticketNumber
+       ## ticketNumber = self.ticketNumber
+        ticketNumber = self.ticketAccumulator
         self.ticketNumber += 1
         return ticketNumber
 
@@ -1008,4 +1011,4 @@ class ManageSupportTicket: # create class to manage support tickets
 
 if __name__ == "__main__":
     login = LoginInterface()
-    login.UserLogin()
+    login.loginUser()

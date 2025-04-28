@@ -303,7 +303,7 @@ class StaffInterface:
                     self.bookList.searchBookList()
                 elif choice == 3:
                     self.bookList.updateBookList()
-                elif choise == 4:
+                elif choice == 4:
                     self.displayStaffMenu()
                 elif choice == 5:
                     print("Thank you for visiting!")
@@ -365,7 +365,7 @@ class CustomerInterface:
                     self.bookCatalog.displayCustomerBookListMenu()
                 elif choice == 4:
                     self.preOrders.displayCustomerPreorderMenu()
-                elif choise == 5:
+                elif choice == 5:
                     self.supportTickets.displayCustomerSupportTicketMenu()
                 elif choice == 6:
                     print("Thank you for visiting!")
@@ -388,7 +388,7 @@ class CustomerInterface:
                     self.accountManager.viewAccount()
                 elif choice == 2:
                     self.accountManager.editAccount()
-                elif choise == 3:
+                elif choice == 3:
                     self.displayCustomerMenu()
                 elif choice == 4:
                     print("Thank you for visiting!")
@@ -548,7 +548,7 @@ class UserAccountManager:
 
     def viewAccounts(self):
         print("\n--- All User Accounts ---")
-        for i, (user_name, account_info_ in enumerate(self.UserAccounts.items(), 1):
+        for i, (user_name, account_info_ in enumerate(self.UserAccounts.items(), 1)):
             print(f"\nAccount #{i}")
             print(f'Username: {username}')
             print(f'Name: {account_info["Name"]}')
@@ -607,7 +607,7 @@ class UserAccountManager:
                     return phone
                 else:
                     print('Invalid entry. Enter a valid phone number.')
-            except ValueError
+            except ValueError:
 
     def displayAccountInformation(self, user_name):
         if user_name in self.UserAccounts:
@@ -720,7 +720,7 @@ class ManageSupportTicket: # create class to manage support tickets
       print(f'Ticket #{ticketNumber} has been closed.')
       return True
     else:
-      print(f'Ticket #{ticketnumber} not found.')
+      print(f'Ticket #{ticketNumber} not found.')
       return False
   
   def removeSupportTicket(self, ticketNumber): # delete a ticket

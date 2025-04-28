@@ -627,9 +627,10 @@ class UserAccountManager:
             print(f'Email: {user["eMail"]}')
             print(f'Phone: {user["Phone"]}')
             print(f'Designation: {user["Designation"]}')
+            return user
         else:
             print(f'{user_name} not found.')
-
+            return None
 
 class SupportTicket:
     def __init__(self):

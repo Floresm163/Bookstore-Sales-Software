@@ -626,6 +626,7 @@ class UserAccountManager:
             print(f'Password: {user["Password"]}')
             print(f'Email: {user["eMail"]}')
             print(f'Phone: {user["Phone"]}')
+            print(f'Designation: {user["Designation"]}')
         else:
             print(f'{user_name} not found.')
 

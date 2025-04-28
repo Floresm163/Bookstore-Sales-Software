@@ -134,9 +134,9 @@ class BookInventory: # manage inventory
         self.testBooks()
     
     def testBooks(self): # add sample books for presentation
-        sample_books = [Book("B001", "Python Programming", "John Doe", 5, 29.99),
-                        Book("B002", "Clean Code", "Robert Martin", 3, 39.99),
-                        Book("B003", "Design Patterns", "Erich Gamma", 2, 49.99)]
+        sample_books = [Book("B001", "Batman", "Scott Snyder", "Horror", 5),
+                        Book("B002", "Superman", "Mark Waid", "Drama", 3),
+                        Book("B003", "Wonder Woman", "Kelly Thompson", "Action", 2)]
         
         for book in sample_books:
             self.books[book.id] = book

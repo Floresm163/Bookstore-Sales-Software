@@ -916,13 +916,19 @@ class InventoryManagementSystem:
     def handleLogin(self) -> None:
         while True:
             username = input("Enter Username: ").strip()
+            if username not in self.accountManager.UserAccounts: # check for existing account
+                print("Username not found. Please try again.")
+                continue  # continue on to password prompt if user is found
+                
             password = input("Enter Password: ").strip()
             user = self.authenticate(username, password)
             if user:
                 self.redirectDesignation(username)
                 return
+            else:
+                print("Invalid password. Please try again.")
 
-    def authenticate(self, username: str, password: str) -> Optional[UserAccount]:
+    def authenticate(self, username: str, password: str) -> Optional[UserAccount]: # check whether the user exists and if the password matches the name
         userData = self.accountManager.UserAccounts.get(username)
         if userData and userData.password == password:
             return userData

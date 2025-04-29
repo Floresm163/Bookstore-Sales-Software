@@ -75,8 +75,11 @@ class UserAccountManager: # class to manage user accounts
             return False
 
         name = input("Enter Name: ").strip()
-        if name: # check if name is empty
+        if name:
             return False
+        if not name:
+              print("Name cannot be empty.")
+        return False
 
         email = input("Enter eMail Address: ")
         if '@' not in email: # basic email validation
@@ -223,7 +226,7 @@ class SupportTicketSystem: # manage customer support tickets
         # Generate ticket ID and create ticket
         ticketID = f"T{self.nextTicketID:04d}"
         self.nextTicketID += 1
-        ticket = SupportTicket(ticket_id, username, issue)
+        ticket = SupportTicket(ticketID, username, issue)
         self.tickets[ticketID] = ticket
         print(f"Ticket {ticketID} created successfully!")
         return ticket
@@ -281,7 +284,7 @@ class WishlistManager:
             return False
       
         for book in self.wishlists[username]: # find and remove book
-            if book.id == bookID:
+            if book.id == book_id:
                 self.wishlists[username].remove(book)
                 print("Book Removed.")
                 return True
@@ -440,6 +443,76 @@ class AdministratorInterface(BaseInterface):
             elif choice == 6:
                 break
 
+    def manageTickets(self) -> None:
+        while self.running:
+            choice = self.displayMenu(
+                "Manage Support Tickets",
+                ["View All Tickets",
+                 "Update Ticket Status",
+                 "Delete Ticket"])
+
+            if choice == 1:
+                tickets = self.ticketSystem.viewTickets()
+                self.printList(tickets, "All Tickets")
+            elif choice == 2:
+                ticket_id = input("Enter Ticket ID to Update: ").strip()
+                self.ticketSystem.updateTicketStatus(ticket_id)
+            elif choice == 3:
+                ticket_id = input("Enter Ticket ID to Delete: ").strip()
+                self.ticketSystem.delete_ticket(ticket_id)
+            elif choice == 4:
+                break
+
+    def managePreorders(self) -> None:
+        while self.running:
+            choice = self.displayMenu(
+                "Manage Preorders",
+                ["View All Preorders",
+                 "Update Preorder Status"])
+
+            if choice == 1:
+                orders = self.preorderSystem.viewOrders()
+                for i, order in enumerate(orders, 1):
+                    print(f"{i}. {order['book'].title} - {order['status']} (Date: {order['date']})")
+            elif choice == 2:
+                username = input("Enter Username: ").strip()
+                try:
+                    order_index = int(input("Enter Order Number to Update: "))
+                    self.preorderSystem.updateOrderStatus(username, order_index)
+                except ValueError:
+                    print("Invalid Order Number.")
+            elif choice == 3:
+                break
+
+    def manageBooks(self) -> None:
+        while self.running:
+            choice = self.displayMenu(
+                "Manage Books",
+                ["View All Books",
+                 "Add Book",
+                 "Update Book",
+                 "Delete Book",
+                 "Search Book"])
+
+            if choice == 1:
+                books = self.bookInventory.viewBooks()
+                self.printList(books, "Available Books")
+            elif choice == 2:
+                self.bookInventory.addBook()
+            elif choice == 3:
+                book_id = input("Enter Book ID to Update: ").strip()
+                self.bookInventory.updateBook(book_id)
+            elif choice == 4:
+                book_id = input("Enter Book ID to Delete: ").strip()
+                self.bookInventory.deleteBook(book_id)
+            elif choice == 5:
+                term = input("Enter Search Term: ").strip()
+                results = self.bookInventory.searchBooks(term)
+                self.printList(results, "Search Results")
+            elif choice == 6:
+                break
+
+
 class StaffInterface(BaseInterface):
     def __init__(self):
         super().__init__()
@@ -520,7 +593,7 @@ class GuestInterface(BaseInterface):
             elif choice == 2:
                 term = input("Enter search term: ").strip()
                 results = self.bookInventory.searchBooks(term)
-                self.print_list(results, "Search Results")
+                self.print2list(results, "Search Results")
             elif choice == 3:
                 self.running = False  # Signal to go back to login
             elif choice == 4:

@@ -633,7 +633,7 @@ class CustomerInterface(BaseInterface):
                 print("Logging out...")
                 self.running = False
 
-def manageBooks(self) -> None:
+    def manageBooks(self) -> None:
         while self.running:
             choice = self.displayMenu(
                 "Search Books",
@@ -649,7 +649,7 @@ def manageBooks(self) -> None:
             elif choice == 3:
                 break
 
-def manageWishlist(self) -> None:  
+    def manageWishlist(self) -> None:  
         while self.running:
             choice = self.displayMenu(
                 "Manage Wish list",

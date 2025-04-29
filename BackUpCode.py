@@ -63,19 +63,25 @@ class UserAccountManager: # class to manage user accounts
     
     @classmethod
     def testAccounts(cls): # create a testAccounts class to populate in test accounts for presentation
-        cls.UserAccounts = {"admin": UserAccount("admin", "Admin", "admin@admin.com", "7778889999", "admin123", UserType.Admin),
-                            "staff": UserAccount("staff", "Staff", "admin@admin.com", "7778889999", "staff123", UserType.Staff),
-                            "customer": UserAccount("customer", "Customer", "admin@admin.com", "7778889999", "customer123", UserType.Customer)}
+        cls.UserAccounts = {"admin": UserAccount("admin", "Admin", "admin@admin.com", "1234567891", "admin123", UserType.Admin),
+                            "staff": UserAccount("staff", "Staff", "staff@staff.com", "3457891011", "staff123", UserType.Staff),
+                            "customer": UserAccount("customer", "Customer", "customer@customer.com", "1213141516", "customer123", UserType.Customer)}
     
     def createAccount(self) -> bool: # create a new account with validation
         print("\n--- Create New Account ---")
         print("Type 'QUIT' at any time to cancel account creation\n")
         
+        designation = UserType.Customer
         username = self.getUsername()  # use getUsername method to check for avaiable usernames
         if username is None: # if 'quit' is entered during getUsername the method will return none and cancel
             print("Account Creation Cancelled.")
             return False
-        
+
+        email = self.getEmail(username) # email validation loop method
+        if email is None: # if 'quit' is entered during getUsername the method will return none and cancel
+            print("Account Creation Cancelled.")
+            return False
+            
         name = input("Enter Name: ").strip() # get the users name
         if name.lower() == 'quit': # if user enters quit cancel creation
             print("Account Creation Cancelled.")
@@ -84,42 +90,14 @@ class UserAccountManager: # class to manage user accounts
             print("Name cannot be empty.")
             return False
     
-        email = input("Enter eMail Address: ").strip() # get the users email
-        if email.lower() == 'quit':
+        phone = self.getPhone(username) # phone number validation loop
+        if phone is None: # if 'quit' is entered during getUsername the method will return none and cancel
             print("Account Creation Cancelled.")
-            return False
-        if '@' not in email: # basic email validation
-            print("Invalid eMail Address.")
-            return False
-                
-        try:
-            phone = input("Enter Phone Number: ").strip() # get the users phone number
-            if phone.lower() == 'quit':
-                print("Account Creation Cancelled.")
-                return False
-            if len(phone) != 10 or not phone.isdigit(): # check for valid phone number entry must 10 digits in length
-                print("Phone number must be 10 digits.")
-                return False
-        except ValueError:
-            print("Invalid phone number.")
             return False
             
         password = input("Enter Password: ").strip() # get the password
         if password.lower() == 'quit':
             print("Account Creation Cancelled.")
-            return False
-            
-        try:
-            designation_input = input("Enter Designation (1-Admin, 2-Staff, 3-Customer): ").strip()
-            if designation_input.lower() == 'quit':
-                print("Account Creation Cancelled.")
-                return False
-            designation = int(designation_input)
-            if designation not in {ut.value for ut in UserType if ut != UserType.Guest}:
-                raise ValueError
-            designation = UserType(designation)
-        except ValueError:
-            print("Invalid Designation. Must be 1, 2, or 3.")
             return False
             
         self.UserAccounts[username] = UserAccount(username, name, email, phone, password, designation) # create the account
@@ -138,6 +116,32 @@ class UserAccountManager: # class to manage user accounts
                 return username
             else:
                 print(f"Username '{username}' is already taken. Please try another.")
+
+    def getEmail(self, username): # email account validation, will continue looping until valid email is entered
+        while True:
+            email = input("Enter eMail Address: ").strip()
+            if email.lower() == 'quit':
+                print("Account Creation Cancelled.")
+                return False
+            if '@' not in email: # basic email validation
+                print("Invalid eMail Address.")
+            else:
+                return email
+
+    def getPhone(self, username): # phone number validation, will continue looping until valid email is entered
+        while True:
+            try:
+                phone = input("Enter Phone Number: ").strip() # get the users phone number
+                if phone.lower() == 'quit':
+                    print("Account Creation Cancelled.")
+                    return False
+                if len(phone) != 10 or not phone.isdigit(): # check for valid phone number entry must 10 digits in length
+                    print("Phone number must be 10 digits.")
+                else:
+                    return phone
+            except ValueError:
+                print("Invalid phone number.")
+                return False
         
     def viewAccounts(self) -> None: # display all accounts
         print("\n--- User Accounts ---")
@@ -153,16 +157,80 @@ class UserAccountManager: # class to manage user accounts
         return False
     
     def editAccount(self, username: str) -> bool: # edit existing account
-        if username in self.UserAccounts:
-            print(f"\nEditing Account: {username}")
-            new_password = input("Enter New Password (press enter to skip): ").strip()
-            if new_password:
-                self.UserAccounts[username].password = new_password
-            print("Account Updated Successfully.")
-            return True
-        print("Account Not Found.")
-        return False
+        if username not in self.UserAccounts:
+            print("Account Not Found.")
+            return False 
+            
+        print(f"\nEditing Account: {username}")
+        print(f"Press Enter to Skip Field\n")
+        account = self.UserAccounts[username]
         
+        newName = input(f"Enter New Name (current: {account.name}): ").strip()
+        if newName:
+            account.name = newName
+
+        newPassword = input(f"Enter New Password (current: {account.password}): ").strip()
+        if newPassword:
+            account.password = newPassword
+            
+        editDesignation = input("Would you like to change the designation? (Y/N): ").strip().lower()
+        if editDesignation == 'y':
+            self.editDesignation(username)
+
+        newEmail = self.editEmail(username) # get new email
+        account.email = newEmail
+        
+        newPhone = self.editPhone(username) # get new phone
+        account.phone = newPhone
+
+        print("Account Succesfully Updated")
+
+    def editEmail(self, username: str): # create a method to validate updated email information
+        account = self.UserAccounts[username]
+        while True:
+            newEmail = input(f"Enter New eMail Address (current: {account.email}): ").strip()
+            if newEmail:
+                if '@' not in newEmail: # basic email validation
+                    print("Invalid eMail Address.")
+                else:
+                    return newEmail
+            else:
+                break
+
+    def editPhone(self, username: str): # create a method to validate updated phone information
+        account = self.UserAccounts[username]
+        while True:
+            try:
+                newPhone = input(f"Enter New Phone Number (current: {account.phone}): ").strip() # get the users phone number
+                if newPhone:
+                    if len(newPhone) != 10 or not newPhone.isdigit(): # check for valid phone number entry must 10 digits in length
+                        print("Phone number must be 10 digits.")
+                    else:
+                        return newPhone
+                else:
+                    break
+
+            except ValueError:
+                print("Invalid phone number.")
+
+    def editDesignation(self, username: str) -> bool: # allow administrators to update account designations
+        if username not in self.UserAccounts:
+            print("Account Not Found.")
+            return False
+        try:
+            designation_input = input("Enter New Designation (1-Admin, 2-Staff, 3-Customer): ").strip()
+            designation = int(designation_input)
+            if designation not in {ut.value for ut in UserType if ut != UserType.Guest}:
+                raise ValueError
+                
+            self.UserAccounts[username].designation = UserType(designation)
+            print("Designation Updated Successfully.")
+            return True
+            
+        except ValueError:
+            print("Invalid Designation. Must be 1, 2, or 3.")
+            return False
+            
 class BookInventory: # manage inventory
     def __init__(self):
         self.books: Dict[str, Book] = {}  # stores books by ID

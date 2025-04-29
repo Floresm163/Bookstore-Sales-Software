@@ -216,7 +216,7 @@ class SupportTicketSystem: # manage customer support tickets
         self.tickets: Dict[str, SupportTicket] = {}  # Stores tickets by ID
         self.nextTicketID = 1  # Auto-incrementing ID
 
-    def testTicket(self) -> SupporTicket:
+    def testTicket(self) -> SupportTicket:
         ticket = SupportTicket(
             ticketID,
             username="demo_user",

@@ -601,9 +601,9 @@ class CustomerInterface(BaseInterface):
     def __init__(self):
         super().__init__()
         self.bookInventory = BookInventory()
-        self.wishlistManager = WishlistManager()
-        self.preorderSystem = PreorderSystem()
-        self.ticketSystem = SupportTicketSystem()
+        self.manageWishlist = WishlistManager()
+        self.managePreorder = PreorderSystem()
+        self.manageTicket = SupportTicketSystem()
     
     def run(self, username: str) -> None: # main customer loop
         self.currentUser = username
@@ -615,10 +615,8 @@ class CustomerInterface(BaseInterface):
                     "My Preorders",
                     "Support Tickets",
                     "Logout"])
-
-            
             if choice == 1:
-                self.searchBooks()
+                self.manageBooks()
             elif choice == 2:
                 self.manageWishlist()
             elif choice == 3:
@@ -629,6 +627,57 @@ class CustomerInterface(BaseInterface):
                 print("Logging out...")
                 self.running = False
 
+def manageBooks(self) -> None:
+        while self.running:
+            choice = self.displayMenu(
+                "Search Books",
+                ["View All Books",
+                 "Search Book"])
+            if choice == 1:
+                books = self.bookInventory.viewBooks()
+                self.printList(books, "Available Books")
+            elif choice == 2:
+                term = input("Enter Search Term: ").strip()
+                results = self.bookInventory.searchBooks(term)
+                self.printList(results, "Search Results")
+            elif choice == 3:
+                break
+
+def manageWishlist(self) -> None:
+        while self.running:
+            choice = self.displayMenu(
+                "Manage Wish list",
+                ["View My Wish List",
+                 "Add to Wish List",
+                 "Remove from Wish List"])
+            if choice == 1:
+                wishlist = self.manageWishlist.viewWishlist()
+                self.printList(books, "Available Books")
+            elif choice == 2:
+                term = input("Enter Book ID: ").strip()
+                results = self.manageWishlist.addWishlist(term)
+            elif choice == 3:
+                term = input("Enter Book ID: ").strip()
+                results = self.manageWishlist.removeWishlist(term)
+            elif choice == 3:
+                break
+
+    def managePreorders(self) -> None:
+        while self.running:
+            choice = self.displayMenu(
+                "Preorders",
+                ["Submit Preoder",
+                 "Remove Preorder"])
+
+            if choice == 1:
+                term = input("Enter Book ID to Submit Pre-Order: ").strip()
+                results = self.managePreorder.createPreorder(term)
+            elif choice == 2:
+                term = input("Enter Book ID to Remove Pre-Order: ").strip()
+                results = self.managePreorder.removePreorder(term)
+            elif choice == 3:
+                break
+    
     def manageTickets(self) -> None:
         while self.running:
             choice = self.displayMenu(

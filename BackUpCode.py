@@ -263,26 +263,32 @@ class SupportTicketSystem: # manage customer support tickets
 class WishlistManager:
     def __init__(self):
         self.wishlists: Dict[str, List[Book]] = {}  # {username: [book1, book2]}
+        self.bookInventory = BookInventory() 
     
-    def addWishlist(self, username: str, book: Book) -> bool: # adds book to wishlist
+    def addWishlist(self, username: str, bookID: str) -> bool: # adds book to wishlist
         if username not in self.wishlists:
             self.wishlists[username] = []
         
-        if book in self.wishlists[username]:  # Check if already in wishlist
+        book = self.bookInventory.books.get(bookID) # get book from the book inventory
+        if not book:
+            print("Book not found in inventory.")
+            return False
+            
+        if book in self.wishlists[username]:  # check if already in wishlist
             print("Book Already in Wishlist.")
             return False
         
         self.wishlists[username].append(book)
-        print(f"Added '{book.title}' to Wishlit.")
+        print(f"Added '{book.title}' to Wishlist.")
         return True
     
-    def removeWishlist(self, username: str, book_id: str) -> bool: #removes a book from users wishlist
+    def removeWishlist(self, username: str, bookID: str) -> bool: #removes a book from users wishlist
         if username not in self.wishlists:
             print("No Wishlist Found.")
             return False
       
         for book in self.wishlists[username]: # find and remove book
-            if book.id == book_id:
+            if book.id == bookID:
                 self.wishlists[username].remove(book)
                 print("Book Removed.")
                 return True
@@ -643,23 +649,24 @@ def manageBooks(self) -> None:
             elif choice == 3:
                 break
 
-def manageWishlist(self) -> None:
+def manageWishlist(self) -> None:  
         while self.running:
             choice = self.displayMenu(
                 "Manage Wish list",
                 ["View My Wish List",
                  "Add to Wish List",
                  "Remove from Wish List"])
+            
             if choice == 1:
-                wishlist = self.manageWishlist.viewWishlist()
-                self.printList(books, "Available Books")
+                wishlist = self.wishlistManager.viewWishlist(self.currentUser) 
+                self.printList(wishlist, "Wishlist")
             elif choice == 2:
-                term = input("Enter Book ID: ").strip()
-                results = self.manageWishlist.addWishlist(term)
+                bookID = input("Enter Book ID: ").strip()
+                self.wishlistManager.addWishlist(self.currentUser, bookID) 
             elif choice == 3:
-                term = input("Enter Book ID: ").strip()
-                results = self.manageWishlist.removeWishlist(term)
-            elif choice == 3:
+                bookID = input("Enter Book ID: ").strip()
+                self.wishlistManager.removeWishlist(self.currentUser, bookID)  
+            elif choice == 4:
                 break
 
     def managePreorders(self) -> None:

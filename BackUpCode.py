@@ -542,6 +542,63 @@ class StaffInterface(BaseInterface):
                 print("Logging out...")
                 self.running = False
 
+    def manageBooks(self) -> None:
+        while self.running:
+            choice = self.displayMenu(
+                "Manage Books",
+                ["View All Books",
+                 "Update Book",
+                 "Search Book"])
+
+            if choice == 1:
+                books = self.bookInventory.viewBooks()
+                self.printList(books, "Available Books")
+            elif choice == 2:
+                book_id = input("Enter Book ID to Update: ").strip()
+                self.bookInventory.updateBook(book_id)
+            elif choice == 3:
+                term = input("Enter Search Term: ").strip()
+                results = self.bookInventory.searchBooks(term)
+                self.printList(results, "Search Results")
+            elif choice == 4:
+                break
+    
+    def managePreorders(self) -> None:
+        while self.running:
+            choice = self.displayMenu(
+                "Manage Preorders",
+                ["View All Preorders",
+                 "Update Preorder Status"])
+
+            if choice == 1:
+                orders = self.preorderSystem.viewOrders()
+                for i, order in enumerate(orders, 1):
+                    print(f"{i}. {order['book'].title} - {order['status']} (Date: {order['date']})")
+            elif choice == 2:
+                username = input("Enter Username: ").strip()
+                try:
+                    order_index = int(input("Enter Order Number to Update: "))
+                    self.preorderSystem.updateOrderStatus(username, order_index)
+                except ValueError:
+                    print("Invalid Order Number.")
+            elif choice == 3:
+                break
+                
+    def manageTickets(self) -> None:
+        while self.running:
+            choice = self.displayMenu(
+                "Manage Support Tickets",
+                ["View All Tickets",
+                 "Update Ticket Status"])
+            if choice == 1:
+                tickets = self.ticketSystem.viewTickets()
+                self.printList(tickets, "All Tickets")
+            elif choice == 2:
+                ticket_id = input("Enter Ticket ID to Update: ").strip()
+                self.ticketSystem.updateTicketStatus(ticket_id)
+            elif choice == 3:
+                break
+
 class CustomerInterface(BaseInterface):
     def __init__(self):
         super().__init__()

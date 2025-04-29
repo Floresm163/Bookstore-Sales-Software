@@ -445,7 +445,7 @@ class StaffInterface(BaseInterface):
         super().__init__()
         self.accountManager = UserAccountManager()
         self.bookInventory = BookInventory()
-        self.preorderSystem = PreOrderSystem()
+        self.preorderSystem = PreorderSystem()
         self.ticketSystem = SupportTicketSystem()
     
     def run(self, username: str) -> None: # main staff interface
@@ -473,7 +473,7 @@ class CustomerInterface(BaseInterface):
         super().__init__()
         self.bookInventory = BookInventory()
         self.wishlistManager = WishlistManager()
-        self.preorderSystem = PreOrderSystem()
+        self.preorderSystem = PreorderSystem()
         self.ticketSystem = SupportTicketSystem()
     
     def run(self, username: str) -> None: # main customer loop

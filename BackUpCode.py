@@ -450,7 +450,6 @@ class AdministratorInterface(BaseInterface):
                 ["View All Tickets",
                  "Update Ticket Status",
                  "Delete Ticket"])
-
             if choice == 1:
                 tickets = self.ticketSystem.viewTickets()
                 self.printList(tickets, "All Tickets")
@@ -593,7 +592,7 @@ class GuestInterface(BaseInterface):
             elif choice == 2:
                 term = input("Enter search term: ").strip()
                 results = self.bookInventory.searchBooks(term)
-                self.print2list(results, "Search Results")
+                self.printList(results, "Search Results")
             elif choice == 3:
                 self.running = False  # Signal to go back to login
             elif choice == 4:

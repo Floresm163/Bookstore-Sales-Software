@@ -672,8 +672,7 @@ class GuestInterface(BaseInterface):
             elif choice == 3:
                 self.running = False  # Signal to go back to login
             elif choice == 4:
-                accountManager = UserAccountManager()
-                accountManager.createAccount()
+                self.accountManager.createAccount()
             elif choice == 5:
                 break
 

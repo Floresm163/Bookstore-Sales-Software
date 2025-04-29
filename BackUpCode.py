@@ -74,10 +74,10 @@ class UserAccountManager: # class to manage user accounts
             print("Username already exists.")
             return False
 
-         name = input("Enter Name: ").strip()
-            if not name:
-                print("Name cannot be empty.")
-                return False
+        name = input("Enter Name: ").strip()
+        if not name:
+            print("Name cannot be empty.")
+            return False
 
         email = input("Enter eMail Address: ")
         if '@' not in email: # basic email validation

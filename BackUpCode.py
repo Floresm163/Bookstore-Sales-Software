@@ -777,6 +777,7 @@ class GuestInterface(BaseInterface):
     def __init__(self):
         super().__init__()
         self.bookInventory = BookInventory()
+        self.accountManager = UserAccountManager()
     
     def run(self) -> None: # main guest interface
         while self.running:

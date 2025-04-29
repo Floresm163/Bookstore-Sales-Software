@@ -796,7 +796,7 @@ class GuestInterface(BaseInterface):
                 results = self.bookInventory.searchBooks(term)
                 self.printList(results, "Search Results")
             elif choice == 3:
-                self.running = False  # Signal to go back to login
+                return "login" # Signal to go back to login
             elif choice == 4:
                 self.accountManager.createAccount()
             elif choice == 5:
@@ -817,7 +817,9 @@ class InventoryManagementSystem:
             if choice == 1:
                 self.handleLogin()
             elif choice == 2:
-                self.guestInterface.run()
+                result = self.guestInterface.run()
+                if result == "login":
+                    self.handleLogin()
             elif choice == 3:
                 self.accountManager.createAccount()
             elif choice == 4:

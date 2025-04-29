@@ -851,7 +851,7 @@ class GuestInterface(BaseInterface):
         while self.running:
             choice = self.displayMenu(
                 "Guest Menu",
-                    ["Browse Books",
+                    ["View Books",
                     "Search Books",
                     "Login",
                     "Create Account"])
@@ -896,7 +896,7 @@ class InventoryManagementSystem:
 
     def displayMainMenu(self) -> int:
         print("\n--- Inventory Management System ---")
-        print("1. Login")
+        print("1. Log In")
         print("2. Continue as Guest")
         print("3. Create Account")
         print("4. EXIT")

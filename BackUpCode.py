@@ -347,6 +347,8 @@ class PreorderSystem: # manages preorders
     def viewOrders(self, username: Optional[str] = None) -> List[Dict]:
         if username:
             return self.Preorders.get(username, [])
+        else:
+            print("No Preorders Available.")
         return [order for user_orders in self.Preorders.values() for order in user_orders]
       
 

@@ -215,6 +215,14 @@ class SupportTicketSystem: # manage customer support tickets
     def __init__(self):
         self.tickets: Dict[str, SupportTicket] = {}  # Stores tickets by ID
         self.nextTicketID = 1  # Auto-incrementing ID
+
+    def testTicket(self) -> SupporTicket:
+        ticket = SupportTicket(
+            ticketID,
+            username="demo_user",
+            issue="Sample issue for demonstration purposes")
+        self.tickets[ticketID] = ticket
+        return ticket
     
     def createTicket(self, username: str) -> Optional[SupportTicket]: # create new support ticket
         print("\n--- Create Support Ticket ---")

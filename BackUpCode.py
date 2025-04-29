@@ -74,12 +74,10 @@ class UserAccountManager: # class to manage user accounts
             print("Username already exists.")
             return False
 
-        name = input("Enter Name: ").strip()
-        if name:
-            return False
-        if not name:
-              print("Name cannot be empty.")
-        return False
+         name = input("Enter Name: ").strip()
+            if not name:
+                print("Name cannot be empty.")
+                return False
 
         email = input("Enter eMail Address: ")
         if '@' not in email: # basic email validation
@@ -637,7 +635,6 @@ class CustomerInterface(BaseInterface):
                 "Support Ticket Management",
                 ["View My Tickets",
                  "Create New Ticket",
-                 "Update My Ticket Status",
                  "Delete My Ticket"])
 
             if choice == 1:
@@ -646,12 +643,9 @@ class CustomerInterface(BaseInterface):
             elif choice == 2:
                 self.ticketSystem.createTicket(self.currentUser)
             elif choice == 3:
-                ticket_id = input("Enter Ticket ID to Update: ").strip()
-                self.ticketSystem.updateTicketStatus(ticket_id)
-            elif choice == 4:
                 ticket_id = input("Enter Ticket ID to Delete: ").strip()
                 self.ticketSystem.delete_ticket(ticket_id)
-            elif choice == 5:
+            elif choice == 4:
                 break
 
 class GuestInterface(BaseInterface):

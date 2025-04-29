@@ -618,7 +618,7 @@ class CustomerInterface(BaseInterface):
 
             
             if choice == 1:
-                self.browseBooks()
+                self.searchBooks()
             elif choice == 2:
                 self.manageWishlist()
             elif choice == 3:

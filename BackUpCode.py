@@ -162,7 +162,7 @@ class UserAccountManager: # class to manage user accounts
             return False 
             
         print(f"\nEditing Account: {username}")
-        print(f"Press Enter to Skip Field\n")
+        print("Press enter to skip field.")
         account = self.UserAccounts[username]
         
         newName = input(f"Enter New Name (current: {account.name}): ").strip()
@@ -414,17 +414,17 @@ class PreorderSystem: # manages preorders
             'Status': 'Pending'}
 
         self.Preorders[username].append(order)
-        print(f"Preorder created for '{book.title}'!")
+        print(f"Pre-order created for '{book.title}'!")
         return True
     
     def cancelPreorder(self, username: str, order_index: int) -> bool: # cancel preorder
         if username not in self.Preorders or not self.Preorders[username]:
-            print("No Preorder Found.")
+            print("No Pre-order Found.")
             return False
         
         try:  # remove order by index
             order = self.Preorders[username].pop(order_index - 1)
-            print(f"Cancelled Preorder for '{order['Book'].title}'.")
+            print(f"Cancelled Pre-order for '{order['Book'].title}'.")
             return True
         except IndexError:
             print("Invalid Order Index.")
@@ -432,7 +432,7 @@ class PreorderSystem: # manages preorders
     
     def updateOrderStatus(self, username: str, order_index: int) -> bool: # updates an orders status
         if username not in self.Preorders or not self.Preorders[username]:
-            print("No Preorders Found.")
+            print("No Pre-orders Found.")
             return False
         
         try:
@@ -507,7 +507,7 @@ class AdministratorInterface(BaseInterface):
                     ["Manage User Accounts",
                     "Manage Book Inventory",
                     "Manage Support Tickets",
-                    "Manage Preorders",
+                    "Manage Pre-orders",
                     "Logout"])
 
             if choice == 1:
@@ -572,9 +572,9 @@ class AdministratorInterface(BaseInterface):
     def managePreorders(self) -> None:
         while self.running:
             choice = self.displayMenu(
-            "Manage Preorders",
-            ["View All Preorders",
-             "Update Preorder Status"])
+            "Manage Pre-orders",
+            ["View All Pre-orders",
+             "Update Pre-order Status"])
 
             if choice == 1:
                 orders = self.preorderSystem.viewOrders()
@@ -674,9 +674,9 @@ class StaffInterface(BaseInterface):
     def managePreorders(self) -> None:
         while self.running:
             choice = self.displayMenu(
-            "Manage Preorders",
-            ["View All Preorders",
-             "Update Preorder Status"])
+            "Manage Pre-orders",
+            ["View All Pre-orders",
+             "Update Pre-order Status"])
 
             if choice == 1:
                 orders = self.preorderSystem.viewOrders()
@@ -725,7 +725,7 @@ class CustomerInterface(BaseInterface):
                 "Customer Menu",
                     ["Browse Books",
                     "My Wishlist",
-                    "My Preorders",
+                    "My Pre-orders",
                     "Support Tickets",
                     "Logout"])
             if choice == 1:
@@ -779,15 +779,15 @@ class CustomerInterface(BaseInterface):
     def managePreorders(self) -> None:
         while self.running:
             choice = self.displayMenu(
-                "My Preorders",
-                ["View My Preorders",
-                 "Place New Preorder",
-                 "Cancel Preorder"])
+                "My Pre-orders",
+                ["View My Pre-orders",
+                 "Place New Pre-order",
+                 "Cancel Pre-order"])
 
             if choice == 1:
                 orders = self.preorderSystem.viewOrders(self.currentUser)
                 if not orders:
-                    print("You have no preorders.")
+                    print("You have no pre-orders.")
                 else:
                     for i, order in enumerate(orders, 1):
                         print(f"{i}. {order['Book'].title} - Status: {order['Status']} (Date: {order['Date']})")
@@ -805,7 +805,7 @@ class CustomerInterface(BaseInterface):
             elif choice == 3:
                 orders = self.preorderSystem.viewOrders(self.currentUser)
                 if not orders:
-                    print("You have no preorders to cancel.")
+                    print("You have no pre-orders to cancel.")
                     continue
                 
                 for i, order in enumerate(orders, 1):

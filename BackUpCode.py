@@ -306,42 +306,41 @@ class PreorderSystem: # manages preorders
     def createPreorder(self, username: str, book: Book) -> bool: # creates a new preorder
         if username not in self.Preorders:
             self.Preorders[username] = []
-        
-        # Create order dictionary
-        order = {
-            'book': book,
-            'date': datetime.date.today(),
-            'status': 'Pending'
-        }
+        order = { # reate dictionary for orders
+            'Book': book,
+            'Date': datetime.date.today(),
+            'Status': 'Pending'}
+
         self.Preorders[username].append(order)
         print(f"Preorder created for '{book.title}'!")
         return True
     
     def cancelPreorder(self, username: str, order_index: int) -> bool: # cancel preorder
-        if username not in self.Preorders:
+        if username not in self.Preorders or not self.Preorders[username]:
             print("No Preorder Found.")
             return False
         
         try:  # remove order by index
             order = self.Preorders[username].pop(order_index - 1)
-            print(f"Cancelled Preorder for '{order['book'].title}'.")
+            print(f"Cancelled Preorder for '{order['Book'].title}'.")
             return True
         except IndexError:
             print("Invalid Order Index.")
             return False
     
     def updateOrderStatus(self, username: str, order_index: int) -> bool: # updates an orders status
-        if username not in self.Preorders:
+        if username not in self.Preorders or not self.Preorders[username]:
             print("No Preorders Found.")
             return False
         
         try:
-            print(f"\nCurrent status: {self.Preorders[username][order_index - 1]['status']}")
+            order = self.Preorders[username][order_index - 1]
+            print(f"\nCurrent status: {order['Status']}")
             new_status = input("Enter new status: ").strip()
             if not new_status:
                 print("Status Cannot be empty.")
                 return False
-            self.Preorders[username][order_index - 1]['status'] = new_status
+            self.Preorders[username][order_index - 1]['Status'] = new_status
             print("Order Status Updated.")
             return True
         except IndexError:
@@ -351,11 +350,11 @@ class PreorderSystem: # manages preorders
     def viewOrders(self, username: Optional[str] = None) -> List[Dict]:
         if username:
             return self.Preorders.get(username, [])
-        else:
-            print("No Preorders Available.")
-        return [order for user_orders in self.Preorders.values() for order in user_orders]
-      
-
+        all_orders = [] # return all orders if no username specified
+        for user_orders in self.Preorders.values():
+            all_orders.extend(user_orders)
+        return all_orders
+        
 class BaseInterface: # base interface to prevent 
     def __init__(self):
         self.running = True  # Controls interface loop
@@ -471,14 +470,17 @@ class AdministratorInterface(BaseInterface):
     def managePreorders(self) -> None:
         while self.running:
             choice = self.displayMenu(
-                "Manage Preorders",
-                ["View All Preorders",
-                 "Update Preorder Status"])
+            "Manage Preorders",
+            ["View All Preorders",
+             "Update Preorder Status"])
 
             if choice == 1:
                 orders = self.preorderSystem.viewOrders()
-                for i, order in enumerate(orders, 1):
-                    print(f"{i}. {order['book'].title} - {order['status']} (Date: {order['date']})")
+                if not orders:
+                    print("No preorders found.")
+                else:
+                    for i, order in enumerate(orders, 1):
+                        print(f"{i}. {order['Book'].title} - {order['Status']} (Date: {order['Date']})")
             elif choice == 2:
                 username = input("Enter Username: ").strip()
                 try:
@@ -570,14 +572,17 @@ class StaffInterface(BaseInterface):
     def managePreorders(self) -> None:
         while self.running:
             choice = self.displayMenu(
-                "Manage Preorders",
-                ["View All Preorders",
-                 "Update Preorder Status"])
+            "Manage Preorders",
+            ["View All Preorders",
+             "Update Preorder Status"])
 
             if choice == 1:
                 orders = self.preorderSystem.viewOrders()
-                for i, order in enumerate(orders, 1):
-                    print(f"{i}. {order['book'].title} - {order['status']} (Date: {order['date']})")
+                if not orders:
+                    print("No preorders found.")
+                else:
+                    for i, order in enumerate(orders, 1):
+                        print(f"{i}. {order['Book'].title} - {order['Status']} (Date: {order['Date']})")
             elif choice == 2:
                 username = input("Enter Username: ").strip()
                 try:
@@ -607,11 +612,11 @@ class CustomerInterface(BaseInterface):
     def __init__(self):
         super().__init__()
         self.bookInventory = BookInventory()
-        self.manageWishlist = WishlistManager()
-        self.managePreorder = PreorderSystem()
-        self.manageTicket = SupportTicketSystem()
+        self.wishlistManager = WishlistManager()  
+        self.preorderSystem = PreorderSystem()   
+        self.ticketSystem = SupportTicketSystem()
     
-    def run(self, username: str) -> None: # main customer loop
+    def run(self, username: str) -> None:
         self.currentUser = username
         while self.running:
             choice = self.displayMenu(
@@ -652,19 +657,19 @@ class CustomerInterface(BaseInterface):
     def manageWishlist(self) -> None:  
         while self.running:
             choice = self.displayMenu(
-                "Manage Wish list",
-                ["View My Wish List",
-                 "Add to Wish List",
-                 "Remove from Wish List"])
+                "Manage Wishlist",
+                ["View My Wishlist",
+                 "Add to Wishlist",
+                 "Remove from Wishlist"])
             
             if choice == 1:
                 wishlist = self.wishlistManager.viewWishlist(self.currentUser) 
-                self.printList(wishlist, "Wishlist")
+                self.printList(wishlist, "My Wishlist")
             elif choice == 2:
-                bookID = input("Enter Book ID: ").strip()
+                bookID = input("Enter Book ID to add: ").strip()
                 self.wishlistManager.addWishlist(self.currentUser, bookID) 
             elif choice == 3:
-                bookID = input("Enter Book ID: ").strip()
+                bookID = input("Enter Book ID to remove: ").strip()
                 self.wishlistManager.removeWishlist(self.currentUser, bookID)  
             elif choice == 4:
                 break
@@ -672,19 +677,49 @@ class CustomerInterface(BaseInterface):
     def managePreorders(self) -> None:
         while self.running:
             choice = self.displayMenu(
-                "Preorders",
-                ["Submit Preoder",
-                 "Remove Preorder"])
+                "My Preorders",
+                ["View My Preorders",
+                 "Place New Preorder",
+                 "Cancel Preorder"])
 
             if choice == 1:
-                term = input("Enter Book ID to Submit Pre-Order: ").strip()
-                results = self.managePreorder.createPreorder(term)
+                orders = self.preorderSystem.viewOrders(self.currentUser)
+                if not orders:
+                    print("You have no preorders.")
+                else:
+                    for i, order in enumerate(orders, 1):
+                        print(f"{i}. {order['Book'].title} - Status: {order['Status']} (Date: {order['Date']})")
             elif choice == 2:
-                term = input("Enter Book ID to Remove Pre-Order: ").strip()
-                results = self.managePreorder.removePreorder(term)
+                # Show available books first
+                books = self.bookInventory.viewBooks()
+                self.printList(books, "Available Books")
+                
+                bookID = input("Enter Book ID to preorder: ").strip()
+                book = self.bookInventory.books.get(bookID)
+                if book:
+                    self.preorderSystem.createPreorder(self.currentUser, book)
+                else:
+                    print("Book not found.")
             elif choice == 3:
+                orders = self.preorderSystem.viewOrders(self.currentUser)
+                if not orders:
+                    print("You have no preorders to cancel.")
+                    continue
+                
+                for i, order in enumerate(orders, 1):
+                    print(f"{i}. {order['Book'].title} - Status: {order['Status']}")
+                
+                try:
+                    order_num = int(input("Enter preorder number to cancel: "))
+                    if 1 <= order_num <= len(orders):
+                        self.preorderSystem.cancelPreorder(self.currentUser, order_num)
+                    else:
+                        print("Invalid order number.")
+                except ValueError:
+                    print("Please enter a valid number.")
+            elif choice == 4:
                 break
-    
+
     def manageTickets(self) -> None:
         while self.running:
             choice = self.displayMenu(

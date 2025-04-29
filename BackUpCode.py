@@ -215,14 +215,6 @@ class SupportTicketSystem: # manage customer support tickets
     def __init__(self):
         self.tickets: Dict[str, SupportTicket] = {}  # Stores tickets by ID
         self.nextTicketID = 1  # Auto-incrementing ID
-
-    def testTicket(self) -> SupportTicket:
-        ticket = SupportTicket(
-            ticketID,
-            username="demo_user",
-            issue="Sample issue for demonstration purposes")
-        self.tickets[ticketID] = ticket
-        return ticket
     
     def createTicket(self, username: str) -> Optional[SupportTicket]: # create new support ticket
         print("\n--- Create Support Ticket ---")
@@ -548,63 +540,6 @@ class StaffInterface(BaseInterface):
                 print("Logging out...")
                 self.running = False
 
-    def manageBooks(self) -> None:
-        while self.running:
-            choice = self.displayMenu(
-                "Manage Books",
-                ["View All Books",
-                 "Update Book",
-                 "Search Book"])
-
-            if choice == 1:
-                books = self.bookInventory.viewBooks()
-                self.printList(books, "Available Books")
-            elif choice == 2:
-                book_id = input("Enter Book ID to Update: ").strip()
-                self.bookInventory.updateBook(book_id)
-            elif choice == 3:
-                term = input("Enter Search Term: ").strip()
-                results = self.bookInventory.searchBooks(term)
-                self.printList(results, "Search Results")
-            elif choice == 4:
-                break
-    
-    def managePreorders(self) -> None:
-        while self.running:
-            choice = self.displayMenu(
-                "Manage Preorders",
-                ["View All Preorders",
-                 "Update Preorder Status"])
-
-            if choice == 1:
-                orders = self.preorderSystem.viewOrders()
-                for i, order in enumerate(orders, 1):
-                    print(f"{i}. {order['book'].title} - {order['status']} (Date: {order['date']})")
-            elif choice == 2:
-                username = input("Enter Username: ").strip()
-                try:
-                    order_index = int(input("Enter Order Number to Update: "))
-                    self.preorderSystem.updateOrderStatus(username, order_index)
-                except ValueError:
-                    print("Invalid Order Number.")
-            elif choice == 3:
-                break
-                
-    def manageTickets(self) -> None:
-        while self.running:
-            choice = self.displayMenu(
-                "Manage Support Tickets",
-                ["View All Tickets",
-                 "Update Ticket Status"])
-            if choice == 1:
-                tickets = self.ticketSystem.viewTickets()
-                self.printList(tickets, "All Tickets")
-            elif choice == 2:
-                ticket_id = input("Enter Ticket ID to Update: ").strip()
-                self.ticketSystem.updateTicketStatus(ticket_id)
-            elif choice == 3:
-                break
-
 class CustomerInterface(BaseInterface):
     def __init__(self):
         super().__init__()
@@ -636,6 +571,29 @@ class CustomerInterface(BaseInterface):
             elif choice == 5:
                 print("Logging out...")
                 self.running = False
+
+    def manageTickets(self) -> None:
+        while self.running:
+            choice = self.displayMenu(
+                "Support Ticket Management",
+                ["View My Tickets",
+                 "Create New Ticket",
+                 "Update My Ticket Status",
+                 "Delete My Ticket"])
+
+            if choice == 1:
+                tickets = self.ticketSystem.viewTickets(self.currentUser)
+                self.printList(tickets, "My Tickets")
+            elif choice == 2:
+                self.ticketSystem.createTicket(self.currentUser)
+            elif choice == 3:
+                ticket_id = input("Enter Ticket ID to Update: ").strip()
+                self.ticketSystem.updateTicketStatus(ticket_id)
+            elif choice == 4:
+                ticket_id = input("Enter Ticket ID to Delete: ").strip()
+                self.ticketSystem.delete_ticket(ticket_id)
+            elif choice == 5:
+                break
 
 class GuestInterface(BaseInterface):
     def __init__(self):

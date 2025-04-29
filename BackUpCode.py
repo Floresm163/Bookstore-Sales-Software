@@ -62,49 +62,83 @@ class UserAccountManager: # class to manage user accounts
         return cls._instance
     
     @classmethod
-    def testAccounts(cls):
+    def testAccounts(cls): # create a testAccounts class to populate in test accounts for presentation
         cls.UserAccounts = {"admin": UserAccount("admin", "Admin", "admin@admin.com", "7778889999", "admin123", UserType.Admin),
                             "staff": UserAccount("staff", "Staff", "admin@admin.com", "7778889999", "staff123", UserType.Staff),
                             "customer": UserAccount("customer", "Customer", "admin@admin.com", "7778889999", "customer123", UserType.Customer)}
     
-    def createAccount(self) -> bool: # creates a new account with validation
+    def createAccount(self) -> bool: # create a new account with validation
         print("\n--- Create New Account ---")
-        username = input("Enter Username: ").strip()
-        if username in self.UserAccounts: # check if username exists
-            print("Username already exists.")
+        print("Type 'QUIT' at any time to cancel account creation\n")
+        
+        username = self.getUsername()  # use getUsername method to check for avaiable usernames
+        if username is None: # if 'quit' is entered during getUsername the method will return none and cancel
+            print("Account Creation Cancelled.")
             return False
-
-        name = input("Enter Name: ").strip()
+        
+        name = input("Enter Name: ").strip() # get the users name
+        if name.lower() == 'quit': # if user enters quit cancel creation
+            print("Account Creation Cancelled.")
+            return False
         if not name:
             print("Name cannot be empty.")
             return False
-
-        email = input("Enter eMail Address: ")
-        if '@' not in email: # basic email validation
+    
+        email = input("Enter eMail Address: ").strip() # get the users email
+        if email.lower() == 'quit':
+            print("Account Creation Cancelled.")
             return False
-            
-        try: # get and validate phone number
-            phone = input("Enter Phone Number: ").strip()
-            if len(phone) != 10:
+        if '@' not in email: # basic email validation
+            print("Invalid eMail Address.")
+            return False
+                
+        try:
+            phone = input("Enter Phone Number: ").strip() # get the users phone number
+            if phone.lower() == 'quit':
+                print("Account Creation Cancelled.")
+                return False
+            if len(phone) != 10 or not phone.isdigit(): # check for valid phone number entry must 10 digits in length
+                print("Phone number must be 10 digits.")
                 return False
         except ValueError:
-            print("Invalid designation. Must be 1, 2, or 3.")
+            print("Invalid phone number.")
             return False
-        
-        password = input("Enter Password: ").strip()
-        try: # get and validate account designation
-            designation = int(input("Enter Designation (1-Admin, 2-Staff, 3-Customer): "))
+            
+        password = input("Enter Password: ").strip() # get the password
+        if password.lower() == 'quit':
+            print("Account Creation Cancelled.")
+            return False
+            
+        try:
+            designation_input = input("Enter Designation (1-Admin, 2-Staff, 3-Customer): ").strip()
+            if designation_input.lower() == 'quit':
+                print("Account Creation Cancelled.")
+                return False
+            designation = int(designation_input)
             if designation not in {ut.value for ut in UserType if ut != UserType.Guest}:
                 raise ValueError
             designation = UserType(designation)
         except ValueError:
-            print("Invalid designation. Must be 1, 2, or 3.")
+            print("Invalid Designation. Must be 1, 2, or 3.")
             return False
-        
-        self.UserAccounts[username] = UserAccount(username, name, email, phone, password, designation) # create and store new account
+            
+        self.UserAccounts[username] = UserAccount(username, name, email, phone, password, designation) # create the account
         print("Account Created Successfully.")
         return True
-    
+
+    def getUsername(self): # user name validation. will continue to loop until valid username or 'quit' is entered
+        while True:
+            username = input("Enter a username: ").strip()
+            if username.lower() == 'quit':
+                return None
+            if not username:
+                print("Username cannot be empty.")
+                continue
+            if username not in self.UserAccounts:
+                return username
+            else:
+                print(f"Username '{username}' is already taken. Please try another.")
+        
     def viewAccounts(self) -> None: # display all accounts
         print("\n--- User Accounts ---")
         for account in self.UserAccounts.values():
@@ -128,7 +162,7 @@ class UserAccountManager: # class to manage user accounts
             return True
         print("Account Not Found.")
         return False
-
+        
 class BookInventory: # manage inventory
     def __init__(self):
         self.books: Dict[str, Book] = {}  # stores books by ID
@@ -809,20 +843,13 @@ class InventoryManagementSystem:
                 print("Invalid input. Please enter a number.")
 
     def handleLogin(self) -> None:
-        attempts = 0
-        while attempts < self.maxAttempts:
+        while True:
             username = input("Enter Username: ").strip()
             password = input("Enter Password: ").strip()
             user = self.authenticate(username, password)
             if user:
                 self.redirectDesignation(username)
                 return
-            
-            attempts += 1
-            remaining = self.maxAttempts - attempts
-            print(f"Invalid credentials. {remaining} attempts remaining.")
-        
-        print("Maximum Login Attempts Reached.")
 
     def authenticate(self, username: str, password: str) -> Optional[UserAccount]:
         userData = self.accountManager.UserAccounts.get(username)

@@ -808,8 +808,7 @@ class StaffInterface(BaseInterface):
             choice = self.displayMenu(
                 "Support Ticket Management",
                 ["View All Tickets",
-                 "Update Ticket Status",
-                 "Delete Ticket"])
+                 "Update Ticket Status"])
     
             if choice == 1:
                 current_user = self.accountManager.UserAccounts.get(self.currentUser)
@@ -819,9 +818,6 @@ class StaffInterface(BaseInterface):
                 ticket_id = input("Enter Ticket ID to Update: ").strip()
                 self.ticketSystem.updateTicketStatus(ticket_id)
             elif choice == 3:
-                ticket_id = input("Enter Ticket ID to Delete: ").strip()
-                self.ticketSystem.delete_ticket(ticket_id)
-            elif choice == 4:
                 break
                 
 #     Provides a user-friendly interface for customers to interact with the system.

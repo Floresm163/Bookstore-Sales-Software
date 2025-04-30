@@ -462,7 +462,7 @@ class BaseInterface: # base interface to prevent
         self.running = True  # Controls interface loop
     
     def displayMenu(self, title: str, options: List[str]) -> int: # displays a menu and returns the users choice
-        print(f"\n--- {title} ---")
+        print(f"\n----- {title} -----")
         for i, option in enumerate(options, 1):
             print(f"{i}. {option}")
         print(f"{len(options)+1}. Back")
@@ -525,7 +525,7 @@ class AdministratorInterface(BaseInterface):
     def manageAccounts(self) -> None:
         while self.running:
             choice = self.displayMenu(
-                "--- User Account Management ---",
+                "User Account Management",
                     ["View All Accounts",
                     "Create New Account",
                     "Delete Account",
@@ -553,7 +553,7 @@ class AdministratorInterface(BaseInterface):
     def manageTickets(self) -> None:
         while self.running:
             choice = self.displayMenu(
-                "--- Support Ticket Management ---",
+                "Support Ticket Management",
                 ["View All Tickets",
                  "Update Ticket Status",
                  "Delete Ticket"])
@@ -572,7 +572,7 @@ class AdministratorInterface(BaseInterface):
     def managePreorders(self) -> None:
         while self.running:
             choice = self.displayMenu(
-            "--- Pre-order Management ---",
+            "Pre-order Management",
             ["View All Pre-orders",
              "Update Pre-order Status"])
 
@@ -596,7 +596,7 @@ class AdministratorInterface(BaseInterface):
     def manageBooks(self) -> None:
         while self.running:
             choice = self.displayMenu(
-                "--- Book Inventory Management ---",
+                "Book Inventory Management",
                 ["View All Books",
                  "Add Book",
                  "Update Book",
@@ -634,7 +634,7 @@ class StaffInterface(BaseInterface):
         self.currentUser = username
         while self.running:
             choice = self.displayMenu(
-                "--- Staff Menu ---",
+                "Staff Menu",
                     ["Manage Book Inventory",
                     "Manage Pre-Orders",
                     "Manage Support Tickets",
@@ -653,7 +653,7 @@ class StaffInterface(BaseInterface):
     def manageBooks(self) -> None:
         while self.running:
             choice = self.displayMenu(
-                "--- Book Inventory Management ---",
+                "Book Inventory Management",
                 ["View All Books",
                  "Update Book",
                  "Search Book"])
@@ -674,7 +674,7 @@ class StaffInterface(BaseInterface):
     def managePreorders(self) -> None:
         while self.running:
             choice = self.displayMenu(
-            "--- Pre-order Management ---",
+            "Pre-order Management",
             ["View All Pre-orders",
              "Update Pre-order Status"])
 
@@ -698,7 +698,7 @@ class StaffInterface(BaseInterface):
     def manageTickets(self) -> None:
         while self.running:
             choice = self.displayMenu(
-                "--- Support Ticket Management ---",
+                "Support Ticket Management",
                 ["View All Tickets",
                  "Update Ticket Status"])
             if choice == 1:
@@ -722,7 +722,7 @@ class CustomerInterface(BaseInterface):
         self.currentUser = username
         while self.running:
             choice = self.displayMenu(
-                "--- User Menu ---",
+                "-User Menu",
                     ["Browse Books",
                     "My Wishlist",
                     "My Pre-orders",
@@ -743,7 +743,7 @@ class CustomerInterface(BaseInterface):
     def manageBooks(self) -> None:
         while self.running:
             choice = self.displayMenu(
-                "--- Browse Book Inventory ---",
+                "Browse Book Inventory",
                 ["View All Books",
                  "Search Book"])
             if choice == 1:
@@ -759,7 +759,7 @@ class CustomerInterface(BaseInterface):
     def manageWishlist(self) -> None:  
         while self.running:
             choice = self.displayMenu(
-                "--- Wish List Management ---",
+                "Wish List Management",
                 ["View My Wish list",
                  "Add to Wish list",
                  "Remove from Wishlist"])
@@ -779,7 +779,7 @@ class CustomerInterface(BaseInterface):
     def managePreorders(self) -> None:
         while self.running:
             choice = self.displayMenu(
-                "--- My Pre-orders ---",
+                "My Pre-orders",
                 ["View My Pre-orders",
                  "Place New Pre-order",
                  "Cancel Pre-order"])
@@ -825,7 +825,7 @@ class CustomerInterface(BaseInterface):
     def manageTickets(self) -> None:
         while self.running:
             choice = self.displayMenu(
-                "--- My Support Tickets ---",
+                "My Support Tickets",
                 ["View My Tickets",
                  "Create New Ticket",
                  "Delete My Ticket"])
@@ -850,7 +850,7 @@ class GuestInterface(BaseInterface):
     def run(self) -> None: # main guest interface
         while self.running:
             choice = self.displayMenu(
-                "--- Guest Menu ---",
+                "Guest Menu",
                     ["View Books",
                     "Search Books",
                     "Login",
@@ -877,7 +877,6 @@ class InventoryManagementSystem:
         self.staffInterface = StaffInterface()
         self.customerInterface = CustomerInterface()
         self.guestInterface = GuestInterface()
-        self.maxAttempts = 3  # Max login attempts
     
     def run(self) -> None:
         while True:

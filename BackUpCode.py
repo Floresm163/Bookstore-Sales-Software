@@ -1,4 +1,5 @@
 """--- Inventory Management System ---"""
+# by Milly Flores, Mary Brannon, Elisa Mujica, and Douglas Henriquez
 
 import datetime
 from enum import Enum, auto
@@ -11,7 +12,7 @@ from typing import Dict, List, Optional, Union
 #         - Staff: Limited access to manage books, tickets, and pre-orders.
 #         - Customer: Access to personal account features like wishlist and orders.
 #         - Guest: Temporary or non-registered user with read-only access.
-# Mary Brannon, 4/27/25 
+# Mary Brannon, 4/27/25
 class UserType(Enum): 
     Admin = 1      # administrator designation with full system access
     Staff = 2      # staff designation with limited system access
@@ -262,7 +263,11 @@ class UserAccountManager: # class to manage user accounts
             print("Invalid Designation. Must be 1, 2, or 3.")
             return False
 
-
+#     Manages the book collection within the inventory system. This class allows
+#     for adding, updating, deleting, and viewing books. It also supports basic
+#     search functionality and initializes the inventory with sample books for
+#     demonstration purposes.
+#     Elisa Mujica, 4/28/25
             
 class BookInventory: # manage inventory
     def __init__(self):
@@ -281,7 +286,7 @@ class BookInventory: # manage inventory
         print("\n--- Add New Book ---")
         bookID = input("Enter Book ID: ").strip()
         
-        if bookID in self.books: # check if book already exists to prevent duplications
+        if bookID in self.books: # check if book already exists to prevent duplication 
             print("Book ID already exists.")
             return False
         
@@ -343,6 +348,12 @@ class BookInventory: # manage inventory
     
     def viewBooks(self) -> List[Book]: # return books in inventory
         return list(self.books.values())
+        
+#     Handles the creation, management, and resolution of customer support
+#     tickets. This class allows users to report issues and enables staff to
+#     track, update, and resolve those tickets. Each ticket is stored and
+#     identified by a unique ID.
+#     Milly Flores, 4/27/25
 
 class SupportTicketSystem: # manage customer support tickets
     def __init__(self):
@@ -395,6 +406,12 @@ class SupportTicketSystem: # manage customer support tickets
         print("Ticket Not Found.")
         return False
 
+#     Manages customer wishlists within the system. Each user can maintain a
+#     personal list of books they are interested in. The class provides methods
+#     for adding, removing, and viewing wishlist items, and relies on the main
+#     BookInventory to validate book existence.
+#     Elisa Mujica, 4/27/25
+
 class WishlistManager:
     def __init__(self):
         self.wishlists: Dict[str, List[Book]] = {}  # {username: [book1, book2]}
@@ -433,6 +450,12 @@ class WishlistManager:
     
     def viewWishlist(self, username: str) -> List[Book]: # returns wishlist
         return self.wishlists.get(username, [])
+
+#     Manages book preorders placed by customers. Allows users to reserve books
+#     in advance, track the status of their orders, and cancel them if needed.
+#     Orders are stored per user and contain key details like the book, order
+#     date, and current status.
+#     Milly Flores, 4/27/25
 
 class PreorderSystem: # manages preorders
     def __init__(self):
@@ -489,6 +512,11 @@ class PreorderSystem: # manages preorders
         for user_orders in self.Preorders.values():
             all_orders.extend(user_orders)
         return all_orders
+
+#     Serves as the foundational user interface class from which all role-specific
+#     interfaces (Administrator, Staff, Customer, Guest) inherit. It provides shared
+#     utility methods for displaying menus and printing lists of items.
+#     Mary Brannon, 4/26/25
         
 class BaseInterface: # base interface to prevent 
     def __init__(self):
@@ -523,6 +551,12 @@ class BaseInterface: # base interface to prevent
         
         for i, item in enumerate(items, 1):
             print(f"{i}. {item}")
+
+#     Provides a full-featured interface for administrators to manage the system.
+#     Admins have access to user account management, book inventory, support tickets,
+#     and preorder workflows. Inherits shared methods from BaseInterface for
+#     menu display and list formatting.
+#     Mary Brannon, 4/26/25
 
 class AdministratorInterface(BaseInterface):
     def __init__(self):
@@ -653,7 +687,11 @@ class AdministratorInterface(BaseInterface):
                 self.printList(results, "Search Results")
             elif choice == 6:
                 break
-
+                
+#     Provides the interface for staff users who assist with book management,
+#     support ticket handling, and preorder processing. Inherits from BaseInterface
+#     to maintain consistent menu and display behavior.
+#     #     Mary Brannon, 4/26/25
 
 class StaffInterface(BaseInterface):
     def __init__(self):
@@ -742,6 +780,11 @@ class StaffInterface(BaseInterface):
                 self.ticketSystem.updateTicketStatus(ticket_id)
             elif choice == 3:
                 break
+
+#     Provides a user-friendly interface for customers to interact with the system.
+#     Customers can browse and search for books, manage their wishlist, place and
+#     cancel preorders, and submit or review support tickets. 
+#     Elisa Mujica, 4/27/25
 
 class CustomerInterface(BaseInterface):
     def __init__(self):
@@ -874,6 +917,11 @@ class CustomerInterface(BaseInterface):
             elif choice == 4:
                 break
 
+#     Provides limited, read-only access for unregistered or unauthenticated users.
+#     Guests can browse and search the book inventory, log in to an existing account,
+#     or create a new one. Inherits basic menu and display utilities from BaseInterface.
+#     Milly Flores, 4/28/25
+
 class GuestInterface(BaseInterface):
     def __init__(self):
         super().__init__()
@@ -902,6 +950,12 @@ class GuestInterface(BaseInterface):
                 self.accountManager.createAccount()
             elif choice == 5:
                 break
+
+#     Acts as the main entry point and controller for the entire application.
+#     Handles system startup, user authentication, interface routing based on
+#     user role, and manages components such as account management and
+#     user interfaces (Admin, Staff, Customer, Guest).
+#     Mary Brannon, 4/26/25
 
 class InventoryManagementSystem:
     def __init__(self):

@@ -665,7 +665,7 @@ class AdministratorInterface(BaseInterface):
                 username = input("Enter Username: ").strip()
                 orders = self.preorderSystem.viewOrders(username=username)
                 if not orders:
-                    print(f"No preorders found for user {username}.")
+                    print(f"No pre-orders found for user {username}.")
                 else:
                     for i, order in enumerate(orders, 1):
                         print(f"{i}. {order['Book'].title} - {order['Status']}")
@@ -678,7 +678,7 @@ class AdministratorInterface(BaseInterface):
                 username = input("Enter Username: ").strip()
                 orders = self.preorderSystem.viewOrders(username=username)
                 if not orders:
-                    print(f"No preorders found for user {username}.")
+                    print(f"No pre-orders found for user {username}.")
                 else:
                     for i, order in enumerate(orders, 1):
                         print(f"{i}. {order['Book'].title} - {order['Status']}")
@@ -791,7 +791,7 @@ class StaffInterface(BaseInterface):
                 username = input("Enter Username: ").strip()
                 orders = self.preorderSystem.viewOrders(username=username)
                 if not orders:
-                    print(f"No preorders found for user {username}.")
+                    print(f"No pre-orders found for user {username}.")
                 else:
                     for i, order in enumerate(orders, 1):
                         print(f"{i}. {order['Book'].title} - {order['Status']}")

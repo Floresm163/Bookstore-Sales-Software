@@ -1,18 +1,19 @@
 """--- Inventory Management System ---"""
-# by Milly Flores, Mary Brannon, Elisa Mujica, and Douglas Henriquez
+#     by Milly Flores, Mary Brannon, Elisa Mujica, and Douglas Henriquez
 
 import datetime
 from enum import Enum, auto
 from typing import Dict, List, Optional, Union
 
-#This  defines the different types of user roles in the system.
+#     This  defines the different types of user roles in the system.
 #     Each role corresponds to a specific level of access and functionality:
 #
-#         - Admin: Full administrative privileges across the system.
-#         - Staff: Limited access to manage books, tickets, and pre-orders.
-#         - Customer: Access to personal account features like wishlist and orders.
-#         - Guest: Temporary or non-registered user with read-only access.
-# Mary Brannon, 4/27/25
+#     - Admin: Full administrative privileges across the system.
+#     - Staff: Limited access to manage books, tickets, and pre-orders.
+#     - Customer: Access to personal account features like wishlist and orders.
+#     - Guest: Temporary or non-registered user with read-only access.
+#     Mary Brannon, 4/27/25
+
 class UserType(Enum): 
     Admin = 1      # administrator designation with full system access
     Staff = 2      # staff designation with limited system access
@@ -23,7 +24,8 @@ class UserType(Enum):
 #     data about a book, including its identifier, title, author,
 #     genre, and the quantity available in stock. It also records the date the
 #     book was added to the system.
-# Elisa Mujica, 4/26/25
+#     Elisa Mujica, 4/26/25
+
 class Book: # collect the information for a book
     def __init__(self, book_id: str, title: str, author: str, genre: str, quantity: int = 0): # initialize book class
         self.id = book_id          
@@ -61,7 +63,7 @@ class SupportTicket: # create customer support tickets
 #     administrators, staff, and customers through their account data.
 #     Used by the account manager and interfaces to manage user access and
 #     provide role-based interaction throughout the system.
-#    Mary Brannon, 4/28/25
+#     Mary Brannon, 4/28/25
 
 class UserAccount: # represent a users account
     def __init__(self, username: str, name: str, email: str, phone: int, password: str, designation: UserType):
@@ -367,8 +369,7 @@ class SupportTicketSystem: # manage customer support tickets
             print("Issue Description Cannot Be Empty.")
             return None
         
-        # Generate ticket ID and create ticket
-        ticketID = f"T{self.nextTicketID:04d}"
+        ticketID = f"T{self.nextTicketID:04d}" # Generate ticket ID and create ticket
         self.nextTicketID += 1
         ticket = SupportTicket(ticketID, username, issue)
         self.tickets[ticketID] = ticket
@@ -386,17 +387,18 @@ class SupportTicketSystem: # manage customer support tickets
             print("Status Cannot Be Empty")
             return False
         
-        # Update status and resolution date if applicable
-        self.tickets[ticketID].status = newStatus
+        self.tickets[ticketID].status = newStatus # ppdate status and resolution date
         if newStatus.lower() == "resolved":
             self.tickets[ticketID].resolved_date = datetime.date.today()
         print("Ticket Status Updated.")
         return True
     
-    def viewTickets(self, username: Optional[str] = None) -> List[SupportTicket]:
-        if username:
-            return [t for t in self.tickets.values() if t.username == username]
-        return list(self.tickets.values())
+    def viewTickets(self, username: Optional[str] = None, current_user: Optional[UserAccount] = None) -> List[SupportTicket]:
+        if current_user and current_user.designation in [UserType.Admin, UserType.Staff]: # Staff and admins can see all tickets
+            return list(self.tickets.values())
+        elif username:
+            return [t for t in self.tickets.values() if t.username == username] # Customers can only see their own tickets
+        return []
     
     def delete_ticket(self, ticketID: str) -> bool:
         if ticketID in self.tickets:
@@ -464,7 +466,7 @@ class PreorderSystem: # manages preorders
     def createPreorder(self, username: str, book: Book) -> bool: # creates a new preorder
         if username not in self.Preorders:
             self.Preorders[username] = []
-        order = { # reate dictionary for orders
+        order = { # create dictionary for orders
             'Book': book,
             'Date': datetime.date.today(),
             'Status': 'Pending'}
@@ -505,13 +507,18 @@ class PreorderSystem: # manages preorders
             print("Invalid Order Index.")
             return False
     
-    def viewOrders(self, username: Optional[str] = None) -> List[Dict]:
-        if username:
-            return self.Preorders.get(username, [])
-        all_orders = [] # return all orders if no username specified
-        for user_orders in self.Preorders.values():
-            all_orders.extend(user_orders)
-        return all_orders
+    def viewOrders(self, username: Optional[str] = None, current_user: Optional[UserAccount] = None) -> List[Dict]:
+        if current_user and current_user.designation in [UserType.Admin, UserType.Staff]: # Return all orders with username information
+            all_orders = []
+            for user, orders in self.Preorders.items():
+                for order in orders:
+                    order_with_user = order.copy()
+                    order_with_user['Username'] = user
+                    all_orders.append(order_with_user)
+            return all_orders
+        elif username:
+            return self.Preorders.get(username, []) # Return only the specified user's orders
+        return []
 
 #     Serves as the foundational user interface class from which all role-specific
 #     interfaces (Administrator, Staff, Customer, Guest) inherit. It provides shared
@@ -526,9 +533,9 @@ class BaseInterface: # base interface to prevent
         print(f"\n----- {title} -----")
         for i, option in enumerate(options, 1):
             print(f"{i}. {option}")
-        print(f"{len(options)+1}. Back")
+        print(f"{len(options)+1}. Back\n")
         if title == "Main Menu":
-            print(f"{len(options)+2}. Exit")
+            print(f"{len(options)+2}. Exit\n")
         
         while True: # get and validate user input
             try:
@@ -559,14 +566,14 @@ class BaseInterface: # base interface to prevent
 #     Mary Brannon, 4/26/25
 
 class AdministratorInterface(BaseInterface):
-    def __init__(self):
+    def __init__(self, accountManager, bookInventory, ticketSystem, preorderSystem):
         super().__init__()
-        self.accountManager = UserAccountManager()
-        self.bookInventory = BookInventory()
-        self.ticketSystem = SupportTicketSystem()
-        self.preorderSystem = PreorderSystem()
+        self.accountManager = accountManager
+        self.bookInventory = bookInventory
+        self.ticketSystem = ticketSystem
+        self.preorderSystem = preorderSystem
     
-    def run(self, username: str) -> None: # main administrative interface
+    def run(self, username: str) -> None:
         self.currentUser = username
         while self.running:
             choice = self.displayMenu(
@@ -624,8 +631,10 @@ class AdministratorInterface(BaseInterface):
                 ["View All Tickets",
                  "Update Ticket Status",
                  "Delete Ticket"])
+    
             if choice == 1:
-                tickets = self.ticketSystem.viewTickets()
+                current_user = self.accountManager.UserAccounts.get(self.currentUser)
+                tickets = self.ticketSystem.viewTickets(current_user=current_user)
                 self.printList(tickets, "All Tickets")
             elif choice == 2:
                 ticket_id = input("Enter Ticket ID to Update: ").strip()
@@ -639,25 +648,46 @@ class AdministratorInterface(BaseInterface):
     def managePreorders(self) -> None:
         while self.running:
             choice = self.displayMenu(
-            "Pre-order Management",
-            ["View All Pre-orders",
-             "Update Pre-order Status"])
-
+                "Pre-order Management",
+                ["View All Pre-orders",
+                 "Update Pre-order Status",
+                 "Cancel Pre-order"])
+    
             if choice == 1:
-                orders = self.preorderSystem.viewOrders()
+                current_user = self.accountManager.UserAccounts.get(self.currentUser)
+                orders = self.preorderSystem.viewOrders(current_user=current_user)
                 if not orders:
-                    print("No preorders found.")
+                    self.printList(orders, "All Pre-orders")
                 else:
                     for i, order in enumerate(orders, 1):
-                        print(f"{i}. {order['Book'].title} - {order['Status']} (Date: {order['Date']})")
+                        print(f"{i}. {order['Book'].title} - {order['Status']} (Date: {order['Date']}, User: {order['Username']})")
             elif choice == 2:
                 username = input("Enter Username: ").strip()
-                try:
-                    order_index = int(input("Enter Order Number to Update: "))
-                    self.preorderSystem.updateOrderStatus(username, order_index)
-                except ValueError:
-                    print("Invalid Order Number.")
+                orders = self.preorderSystem.viewOrders(username=username)
+                if not orders:
+                    print(f"No preorders found for user {username}.")
+                else:
+                    for i, order in enumerate(orders, 1):
+                        print(f"{i}. {order['Book'].title} - {order['Status']}")
+                    try:
+                        order_index = int(input("Enter Order Number to Update: "))
+                        self.preorderSystem.updateOrderStatus(username, order_index)
+                    except ValueError:
+                        print("Invalid Order Number.")
             elif choice == 3:
+                username = input("Enter Username: ").strip()
+                orders = self.preorderSystem.viewOrders(username=username)
+                if not orders:
+                    print(f"No preorders found for user {username}.")
+                else:
+                    for i, order in enumerate(orders, 1):
+                        print(f"{i}. {order['Book'].title} - {order['Status']}")
+                    try:
+                        order_index = int(input("Enter Order Number to Cancel: "))
+                        self.preorderSystem.cancelPreorder(username, order_index)
+                    except ValueError:
+                        print("Invalid Order Number.")
+            elif choice == 4:
                 break
 
     def manageBooks(self) -> None:
@@ -691,15 +721,15 @@ class AdministratorInterface(BaseInterface):
 #     Provides the interface for staff users who assist with book management,
 #     support ticket handling, and preorder processing. Inherits from BaseInterface
 #     to maintain consistent menu and display behavior.
-#     #     Mary Brannon, 4/26/25
+#     Mary Brannon, 4/26/25
 
 class StaffInterface(BaseInterface):
-    def __init__(self):
+    def __init__(self, accountManager, bookInventory, ticketSystem, preorderSystem):
         super().__init__()
-        self.accountManager = UserAccountManager()
-        self.bookInventory = BookInventory()
-        self.preorderSystem = PreorderSystem()
-        self.ticketSystem = SupportTicketSystem()
+        self.accountManager = accountManager
+        self.bookInventory = bookInventory
+        self.ticketSystem = ticketSystem
+        self.preorderSystem = preorderSystem
     
     def run(self, username: str) -> None: # main staff interface
         self.currentUser = username
@@ -745,54 +775,68 @@ class StaffInterface(BaseInterface):
     def managePreorders(self) -> None:
         while self.running:
             choice = self.displayMenu(
-            "Pre-order Management",
-            ["View All Pre-orders",
-             "Update Pre-order Status"])
-
+                "Pre-order Management",
+                ["View All Pre-orders",
+                 "Update Pre-order Status"])
+    
             if choice == 1:
-                orders = self.preorderSystem.viewOrders()
+                current_user = self.accountManager.UserAccounts.get(self.currentUser)
+                orders = self.preorderSystem.viewOrders(current_user=current_user)
                 if not orders:
-                    print("No preorders found.")
+                    self.printList(orders, "All Pre-orders")
                 else:
                     for i, order in enumerate(orders, 1):
-                        print(f"{i}. {order['Book'].title} - {order['Status']} (Date: {order['Date']})")
+                        print(f"{i}. {order['Book'].title} - {order['Status']} (Date: {order['Date']}, User: {order['Username']})")
             elif choice == 2:
                 username = input("Enter Username: ").strip()
-                try:
-                    order_index = int(input("Enter Order Number to Update: "))
-                    self.preorderSystem.updateOrderStatus(username, order_index)
-                except ValueError:
-                    print("Invalid Order Number.")
+                orders = self.preorderSystem.viewOrders(username=username)
+                if not orders:
+                    print(f"No preorders found for user {username}.")
+                else:
+                    for i, order in enumerate(orders, 1):
+                        print(f"{i}. {order['Book'].title} - {order['Status']}")
+                    try:
+                        order_index = int(input("Enter Order Number to Update: "))
+                        self.preorderSystem.updateOrderStatus(username, order_index)
+                    except ValueError:
+                        print("Invalid Order Number.")
             elif choice == 3:
                 break
-                
+
     def manageTickets(self) -> None:
         while self.running:
             choice = self.displayMenu(
                 "Support Ticket Management",
                 ["View All Tickets",
-                 "Update Ticket Status"])
+                 "Update Ticket Status",
+                 "Delete Ticket"])
+    
             if choice == 1:
-                tickets = self.ticketSystem.viewTickets()
+                current_user = self.accountManager.UserAccounts.get(self.currentUser)
+                tickets = self.ticketSystem.viewTickets(current_user=current_user)
                 self.printList(tickets, "All Tickets")
             elif choice == 2:
                 ticket_id = input("Enter Ticket ID to Update: ").strip()
                 self.ticketSystem.updateTicketStatus(ticket_id)
             elif choice == 3:
+                ticket_id = input("Enter Ticket ID to Delete: ").strip()
+                self.ticketSystem.delete_ticket(ticket_id)
+            elif choice == 4:
                 break
-
+                
 #     Provides a user-friendly interface for customers to interact with the system.
 #     Customers can browse and search for books, manage their wishlist, place and
 #     cancel preorders, and submit or review support tickets. 
 #     Elisa Mujica, 4/27/25
 
 class CustomerInterface(BaseInterface):
-    def __init__(self):
+    def __init__(self, accountManager, bookInventory, ticketSystem, preorderSystem):
         super().__init__()
-        self.bookInventory = BookInventory()
-        self.wishlistManager = WishlistManager()  
-        self.preorderSystem = PreorderSystem()   
-        self.ticketSystem = SupportTicketSystem()
+        self.accountManager = accountManager
+        self.bookInventory = bookInventory
+        self.ticketSystem = ticketSystem
+        self.preorderSystem = preorderSystem
+        self.wishlistManager = WishlistManager() 
     
     def run(self, username: str) -> None:
         self.currentUser = username
@@ -860,18 +904,16 @@ class CustomerInterface(BaseInterface):
                  "Place New Pre-order",
                  "Cancel Pre-order"])
 
-            if choice == 1:
-                orders = self.preorderSystem.viewOrders(self.currentUser)
+            if choice == 1:  # Only show pre-orders for the current customer
+                orders = self.preorderSystem.viewOrders(username=self.currentUser)
                 if not orders:
                     print("You have no pre-orders.")
                 else:
                     for i, order in enumerate(orders, 1):
                         print(f"{i}. {order['Book'].title} - Status: {order['Status']} (Date: {order['Date']})")
             elif choice == 2:
-                # Show available books first
                 books = self.bookInventory.viewBooks()
                 self.printList(books, "Available Books")
-                
                 bookID = input("Enter Book ID to Pre-order: ").strip()
                 book = self.bookInventory.books.get(bookID)
                 if book:
@@ -879,22 +921,20 @@ class CustomerInterface(BaseInterface):
                 else:
                     print("Book not found.")
             elif choice == 3:
-                orders = self.preorderSystem.viewOrders(self.currentUser)
+                orders = self.preorderSystem.viewOrders(username=self.currentUser) # Only allow canceling own pre-orders
                 if not orders:
                     print("You have no pre-orders to cancel.")
-                    continue
-                
-                for i, order in enumerate(orders, 1):
-                    print(f"{i}. {order['Book'].title} - Status: {order['Status']}")
-                
-                try:
-                    order_num = int(input("Enter pre-order number to cancel: "))
-                    if 1 <= order_num <= len(orders):
-                        self.preorderSystem.cancelPreorder(self.currentUser, order_num)
-                    else:
-                        print("Invalid order number.")
-                except ValueError:
-                    print("Please enter a valid number.")
+                else:
+                    for i, order in enumerate(orders, 1):
+                        print(f"{i}. {order['Book'].title} - Status: {order['Status']}")
+                    try:
+                        order_num = int(input("Enter pre-order number to cancel: "))
+                        if 1 <= order_num <= len(orders):
+                            self.preorderSystem.cancelPreorder(self.currentUser, order_num)
+                        else:
+                            print("Invalid order number.")
+                    except ValueError:
+                        print("Please enter a valid number.")
             elif choice == 4:
                 break
 
@@ -905,15 +945,19 @@ class CustomerInterface(BaseInterface):
                 ["View My Tickets",
                  "Create New Ticket",
                  "Delete My Ticket"])
-
+    
             if choice == 1:
-                tickets = self.ticketSystem.viewTickets(self.currentUser)
+                tickets = self.ticketSystem.viewTickets(username=self.currentUser)
                 self.printList(tickets, "My Tickets")
             elif choice == 2:
                 self.ticketSystem.createTicket(self.currentUser)
             elif choice == 3:
-                ticket_id = input("Enter Ticket ID to Delete: ").strip()
-                self.ticketSystem.delete_ticket(ticket_id)
+                ticket_id = input("Enter Ticket ID to Delete: ").strip() # Verify ticket belongs to current user before deletion
+                ticket = self.ticketSystem.tickets.get(ticket_id)
+                if ticket and ticket.username == self.currentUser:
+                    self.ticketSystem.delete_ticket(ticket_id)
+                else:
+                    print("Ticket not found or you don't have permission to delete it.")
             elif choice == 4:
                 break
 
@@ -923,10 +967,10 @@ class CustomerInterface(BaseInterface):
 #     Milly Flores, 4/28/25
 
 class GuestInterface(BaseInterface):
-    def __init__(self):
+    def __init__(self, accountManager, bookInventory):
         super().__init__()
-        self.bookInventory = BookInventory()
-        self.accountManager = UserAccountManager()
+        self.accountManager = accountManager
+        self.bookInventory = bookInventory
     
     def run(self) -> None: # main guest interface
         while self.running:
@@ -960,10 +1004,31 @@ class GuestInterface(BaseInterface):
 class InventoryManagementSystem:
     def __init__(self):
         self.accountManager = UserAccountManager()
-        self.administratorInterface = AdministratorInterface()
-        self.staffInterface = StaffInterface()
-        self.customerInterface = CustomerInterface()
-        self.guestInterface = GuestInterface()
+        self.ticketSystem = SupportTicketSystem()
+        self.preorderSystem = PreorderSystem()
+        self.bookInventory = BookInventory()
+        
+        self.administratorInterface = AdministratorInterface(
+            self.accountManager, 
+            self.bookInventory,
+            self.ticketSystem,
+            self.preorderSystem)
+        
+        self.staffInterface = StaffInterface(
+            self.accountManager,
+            self.bookInventory,
+            self.ticketSystem,
+            self.preorderSystem)
+        
+        self.customerInterface = CustomerInterface(
+            self.accountManager,
+            self.bookInventory,
+            self.ticketSystem,
+            self.preorderSystem)
+        
+        self.guestInterface = GuestInterface(
+            self.accountManager,
+            self.bookInventory)
     
     def run(self) -> None:
         while True:
@@ -1036,7 +1101,6 @@ class InventoryManagementSystem:
                 print("Invalid User Type. Please Contact Support.")
         except Exception as e:
             print(f"An error occurred: {e}")
-
 
 if __name__ == "__main__":
     system = InventoryManagementSystem()

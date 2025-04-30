@@ -281,7 +281,7 @@ class BookInventory: # manage inventory
         print("\n--- Add New Book ---")
         bookID = input("Enter Book ID: ").strip()
         
-        if bookID in self.books: # check if book already exists to prevent duplication 
+        if bookID in self.books: # check if book already exists to prevent duplications
             print("Book ID already exists.")
             return False
         

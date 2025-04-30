@@ -53,7 +53,7 @@ class SupportTicket: # create customer support tickets
     
     def __str__(self): # ticket display 
         resolved = f", Resolved: {self.resolved_date}" if self.resolved_date else ""
-        display = (f"{self.id}: {self.issue} (Status: {self.status}{resolved}")
+        display = (f"{self.id}: {self.issue} (Status: {self.status}{resolved})")
         return display
         
 #     Represents a user account within the system. This class holds personal
@@ -138,7 +138,7 @@ class UserAccountManager: # class to manage user accounts
 
     def getUsername(self): # user name validation. will continue to loop until valid username or 'quit' is entered
         while True:
-            username = input("Enter a username: ").strip()
+            username = input("Enter Username: ").strip()
             if username.lower() == 'quit':
                 return None
             if not username:
@@ -295,7 +295,7 @@ class BookInventory: # manage inventory
         genre = input("Enter Genre: ").strip()
         
         try:
-            quantity = int(input("Enter quantity: ").strip())
+            quantity = int(input("Enter Quantity: ").strip())
         except ValueError:
             print("Invalid Quantity.")
             return False
@@ -838,16 +838,16 @@ class CustomerInterface(BaseInterface):
                 "Wish List Management",
                 ["View My Wish list",
                  "Add to Wish list",
-                 "Remove from Wishlist"])
+                 "Remove from Wish list"])
             
             if choice == 1:
                 wishlist = self.wishlistManager.viewWishlist(self.currentUser) 
                 self.printList(wishlist, "My Wish List")
             elif choice == 2:
-                bookID = input("Enter Book ID to add: ").strip()
+                bookID = input("Enter Book ID to Add: ").strip()
                 self.wishlistManager.addWishlist(self.currentUser, bookID) 
             elif choice == 3:
-                bookID = input("Enter Book ID to remove: ").strip()
+                bookID = input("Enter Book ID to Remove: ").strip()
                 self.wishlistManager.removeWishlist(self.currentUser, bookID)  
             elif choice == 4:
                 break
@@ -872,7 +872,7 @@ class CustomerInterface(BaseInterface):
                 books = self.bookInventory.viewBooks()
                 self.printList(books, "Available Books")
                 
-                bookID = input("Enter Book ID to preorder: ").strip()
+                bookID = input("Enter Book ID to Pre-order: ").strip()
                 book = self.bookInventory.books.get(bookID)
                 if book:
                     self.preorderSystem.createPreorder(self.currentUser, book)
@@ -888,7 +888,7 @@ class CustomerInterface(BaseInterface):
                     print(f"{i}. {order['Book'].title} - Status: {order['Status']}")
                 
                 try:
-                    order_num = int(input("Enter preorder number to cancel: "))
+                    order_num = int(input("Enter pre-order number to cancel: "))
                     if 1 <= order_num <= len(orders):
                         self.preorderSystem.cancelPreorder(self.currentUser, order_num)
                     else:

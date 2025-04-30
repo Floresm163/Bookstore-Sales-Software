@@ -4,12 +4,25 @@ import datetime
 from enum import Enum, auto
 from typing import Dict, List, Optional, Union
 
-class UserType(Enum): # use the enum module to set the account designations to constants
+#This  defines the different types of user roles in the system.
+#     Each role corresponds to a specific level of access and functionality:
+#
+#         - Admin: Full administrative privileges across the system.
+#         - Staff: Limited access to manage books, tickets, and pre-orders.
+#         - Customer: Access to personal account features like wishlist and orders.
+#         - Guest: Temporary or non-registered user with read-only access.
+# Mary Brannon, 4/27/25
+class UserType(Enum): 
     Admin = 1      # administrator designation with full system access
     Staff = 2      # staff designation with limited system access
     Customer = 3   # customer designation
     Guest = 4      # guest designation for users without an account
 
+#     Represents a book in the inventory system. This class stores essential
+#     data about a book, including its identifier, title, author,
+#     genre, and the quantity available in stock. It also records the date the
+#     book was added to the system.
+# Elisa Mujica, 4/26/25
 class Book: # collect the information for a book
     def __init__(self, book_id: str, title: str, author: str, genre: str, quantity: int = 0): # initialize book class
         self.id = book_id          
@@ -22,6 +35,11 @@ class Book: # collect the information for a book
     def __str__(self): # retrieve information
         display = (f"\nBook ID: {self.id}\n Title: {self.title}\n Author: {self.author}\n Genre: {self.genre}\n Date Added: {self.date_added}\n Quantity: {self.quantity}")     
         return display
+
+#     Represents a customer support ticket submitted by a user. This class
+#     captures the key details of a support request including who submitted it,
+#     the issue description, current status, and relevant timestamps.
+#     Milly Flores, 4/27/25
 
 class SupportTicket: # create customer support tickets
     def __init__(self, ticket_id: str, username: str, issue: str):
@@ -36,6 +54,13 @@ class SupportTicket: # create customer support tickets
         resolved = f", Resolved: {self.resolved_date}" if self.resolved_date else ""
         display = (f"{self.id}: {self.issue} (Status: {self.status}{resolved}")
         return display
+        
+#     Represents a user account within the system. This class holds personal
+#     information, contact details, and role designation of a user. It supports
+#     administrators, staff, and customers through their account data.
+#     Used by the account manager and interfaces to manage user access and
+#     provide role-based interaction throughout the system.
+#    Mary Brannon, 4/28/25
 
 class UserAccount: # represent a users account
     def __init__(self, username: str, name: str, email: str, phone: int, password: str, designation: UserType):
@@ -50,6 +75,12 @@ class UserAccount: # represent a users account
     def __str__(self): # account display
         display = (f'\nUsername: {self.username}\n Name: {self.name}\n eMail: {self.email}\n Phone: {self.phone}\n Designation: {self.designation.name}') 
         return display
+
+#     Implements a  class responsible for managing all user accounts in
+#     the system. This includes creating new accounts, editing user details,
+#     deleting accounts, and handling user input validation. It maintains an
+#     internal dictionary of UserAccount objects, keyed by username.
+#     Mary Brannon, 4/26/25
 
 class UserAccountManager: # class to manage user accounts
     _instance = None # create a new instance and set it to none by default
@@ -230,6 +261,8 @@ class UserAccountManager: # class to manage user accounts
         except ValueError:
             print("Invalid Designation. Must be 1, 2, or 3.")
             return False
+
+
             
 class BookInventory: # manage inventory
     def __init__(self):

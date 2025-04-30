@@ -722,7 +722,7 @@ class CustomerInterface(BaseInterface):
         self.currentUser = username
         while self.running:
             choice = self.displayMenu(
-                "-User Menu",
+                "User Menu",
                     ["Browse Books",
                     "My Wishlist",
                     "My Pre-orders",

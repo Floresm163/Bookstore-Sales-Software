@@ -11,7 +11,7 @@ from typing import Dict, List, Optional, Union
 #         - Staff: Limited access to manage books, tickets, and pre-orders.
 #         - Customer: Access to personal account features like wishlist and orders.
 #         - Guest: Temporary or non-registered user with read-only access.
-# Mary Brannon, 4/27/25
+# Mary Brannon, 4/27/25 
 class UserType(Enum): 
     Admin = 1      # administrator designation with full system access
     Staff = 2      # staff designation with limited system access

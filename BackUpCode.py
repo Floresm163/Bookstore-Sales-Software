@@ -68,7 +68,7 @@ class UserAccountManager: # class to manage user accounts
                             "customer": UserAccount("customer", "Customer", "customer@customer.com", "1213141516", "customer123", UserType.Customer)}
     
     def createAccount(self) -> bool: # create a new account with validation
-        print("\n--- Create New Account ---")
+        print("\n--------------- Create New Account ---------------")
         print("Type 'QUIT' at any time to cancel account creation\n")
         
         designation = UserType.Customer
